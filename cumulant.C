@@ -472,8 +472,8 @@ void parseampt(int file_n)
 			p.py  = pv[1];
 			p.pz  = pv[2];
 
-      // if ((ifFVTXS(p.eta) && test_eff_s(p.pT, p.eta)) || (ifFVTXN(p.eta) && test_eff_n(p.pT, p.eta)))
-			if ( ifFVTXS(p.eta) || ifFVTXN(p.eta) )
+      // if ( ifFVTXS(p.eta) || ifFVTXN(p.eta) )
+      if ((ifFVTXS(p.eta) && test_eff_s(p.pT, p.eta)) || (ifFVTXN(p.eta) && test_eff_n(p.pT, p.eta)))
 			{
 				all_particle.push_back(p);
 				n_charge++;
