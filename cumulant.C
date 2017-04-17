@@ -37,45 +37,45 @@ using namespace std;
 //Structure declarations
 struct particle
 {
-	int   id;
-	float px;
-	float py;
-	float pz;
-	float m;
-	float x;
-	float y;
-	float z;
-	float t;
-	float eta;
-	float phi;
-	float pT;
-	float rsquare;
+  int   id;
+  float px;
+  float py;
+  float pz;
+  float m;
+  float x;
+  float y;
+  float z;
+  float t;
+  float eta;
+  float phi;
+  float pT;
+  float rsquare;
 };
 
 
 //-----------------------------------------------------------------------------------
 // Function Prototypes
 
-float def_ave_2particle_with_gap(float uxn, float uyn, 
+float def_ave_2particle_with_gap(float uxn, float uyn,
                                  float QxB, float QyB, float M);
-float def_ave_2particle_correlation(float uxn, float uyn, 
+float def_ave_2particle_correlation(float uxn, float uyn,
                                     float QxB, float QyB, float M);
-float def_ave_4particle_correlation(float pxn, float pyn, 
-                                    float qx2n, float qy2n, 
-                                    float Qxn, float Qyn, 
-                                    float Qx2n, float Qy2n, 
+float def_ave_4particle_correlation(float pxn, float pyn,
+                                    float qx2n, float qy2n,
+                                    float Qxn, float Qyn,
+                                    float Qx2n, float Qy2n,
                                     float M, float mp, float mq);
 
 float with_gap_calculation(float QxA, float QyA, float QxB, float QyB, float MA, float MB);
 
 float ave_2particle_correlation(float Qxn, float Qyn, float M);
 float ave_4particle_correlation(float Qxn, float Qyn, float Qx2n, float Qy2n, float M);
-float ave_6particle_correlation(TComplex qn, TComplex q2n, TComplex q3n,float M);
+float ave_6particle_correlation(TComplex qn, TComplex q2n, TComplex q3n, float M);
 
 bool test_eff_s(float pT, float eta);
 bool test_eff_n(float pT, float eta);
 
-void parseampt(int file_n);
+void parseampt();
 void processEvent(vector<particle> nucleons, int n_charge);
 
 
@@ -88,7 +88,6 @@ void processEvent(vector<particle> nucleons, int n_charge);
 
 //-----------------------------------------------------------------------------------
 //Vector declarations
-vector<particle> p1[9];
 vector<particle> pA;
 vector<particle> pB;
 vector<particle> all_particle;
@@ -99,8 +98,6 @@ vector<float> temp_raa6;
 
 //-----------------------------------------------------------------------------------
 //Graphs declarations
-// vector<TProfile*> comp;
-// vector<TH2F*> comp;
 TProfile* comp;
 TProfile* daa2_with_gap;
 TProfile* daa2;
@@ -132,87 +129,67 @@ bool test = false;
 //Functions declarations
 void cumulant()
 {
-	// for (int i = 0; i < 9; i++)
-	// {
-	// 	comp.push_back(new TProfile(Form("comp_%i", i), Form("comp_%i", i), 5, 0.5, 5.5, -10, 10));
-	// }
-	comp = new TProfile("comp", "comp", 4, 0.5, 4.5, -10, 10);
-	daa2 = new TProfile("daa2", "daa2", 9, 0.2, 2.0, -10, 10);
-	daa2_with_gap = new TProfile("daa2_with_gap", "daa2_with_gap", 9, 0.2, 2.0, -10, 10);
-	daa4 = new TProfile("daa4", "daa4", 9, 0.2, 2.0, -10, 10);
+  comp = new TProfile("comp", "comp", 4, 0.5, 4.5, -10, 10);
+  daa2 = new TProfile("daa2", "daa2", 9, 0.2, 2.0, -10, 10);
+  daa2_with_gap = new TProfile("daa2_with_gap", "daa2_with_gap", 9, 0.2, 2.0, -10, 10);
+  daa4 = new TProfile("daa4", "daa4", 9, 0.2, 2.0, -10, 10);
 
-	// 60, -0.5, 599.5, -10, 10
-	// 50, -0.5, 499.5, -10, 10
-	// 100, -0.5, 5999.5, -10, 10   Pb+Pb
-	// 200, -0.5, 199.5, -10, 10   d+Au
-	comp_Ncharge = new TProfile("comp_Ncharge", "comp_Ncharge", 50, -0.5, 199.5, -10, 10); //
-	daa2_Ncharge = new TProfile("daa2_Ncharge", "daa2_Ncharge", 50, -0.5, 199.5, -10, 10); //
-	daa4_Ncharge = new TProfile("daa4_Ncharge", "daa4_Ncharge", 50, -0.5, 199.5, -10, 10); //
-	daa2_with_gap_Ncharge = new TProfile("daa2_with_gap_Ncharge", "daa2_with_gap_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  // 60, -0.5, 599.5, -10, 10
+  // 50, -0.5, 499.5, -10, 10
+  // 100, -0.5, 5999.5, -10, 10   Pb+Pb
+  // 200, -0.5, 199.5, -10, 10   d+Au
+  comp_Ncharge = new TProfile("comp_Ncharge", "comp_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  daa2_Ncharge = new TProfile("daa2_Ncharge", "daa2_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  daa4_Ncharge = new TProfile("daa4_Ncharge", "daa4_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  daa2_with_gap_Ncharge = new TProfile("daa2_with_gap_Ncharge", "daa2_with_gap_Ncharge", 50, -0.5, 199.5, -10, 10); //
 
-	raa2_Ncharge = new TProfile("raa2_Ncharge", "raa2_Ncharge", 50, -0.5, 199.5, -10, 10); //
-	raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", 50, -0.5, 199.5, -10, 10); //
-	raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  raa2_Ncharge = new TProfile("raa2_Ncharge", "raa2_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", 50, -0.5, 199.5, -10, 10); //
+  raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", 50, -0.5, 199.5, -10, 10); //
 
-	dnch = new TH1F("dnch", "dnch", 6000, -0.5, 5999.5);
-	bhis = new TH1F("bhis", "bhis", 100, 0, 20);
+  dnch = new TH1F("dnch", "dnch", 6000, -0.5, 5999.5);
+  bhis = new TH1F("bhis", "bhis", 100, 0, 20);
 
-	TFile *f_fvtxs = new TFile("fvtx_acc.root");
-    TFile *f_fvtxn = new TFile("fvtx_acc_n.root");
+  TFile *f_fvtxs = new TFile("fvtx_acc.root");
+  TFile *f_fvtxn = new TFile("fvtx_acc_n.root");
 
-    eff_fvtx_s = (TH1D*)f_fvtxs->Get("rh1");
-    eff_fvtx_n = (TH1D*)f_fvtxn->Get("rh1");
+  eff_fvtx_s = (TH1D*)f_fvtxs->Get("rh1");
+  eff_fvtx_n = (TH1D*)f_fvtxn->Get("rh1");
 
-    eff_fvtx_s->Scale(1./eff_fvtx_s->GetMaximum());
-    eff_fvtx_n->Scale(1./eff_fvtx_n->GetMaximum());
+  eff_fvtx_s->Scale(1. / eff_fvtx_s->GetMaximum());
+  eff_fvtx_n->Scale(1. / eff_fvtx_n->GetMaximum());
 
-    frandom = new TF1("frandom", "1", 0.0, 1.0);
+  frandom = new TF1("frandom", "1", 0.0, 1.0);
 
-	for (int i = 0; i < 1; i++)
-	{
-		parseampt(i);
-	}
+  // Parse ampt.dat (run over all events)
+  parseampt();
 
-	//Make a file to store outputs
-	TFile *fout = new TFile("six.root", "RECREATE");
+  //Make a file to store outputs
+  TFile *fout = new TFile("six.root", "RECREATE");
 
-	// for (int i = 0; i < 9; i++)
-	// {
-	// 	comp[i]->Write();
-	// }
-	comp->Write();
-	daa2->Write();
-	daa2_with_gap->Write();
-	daa4->Write();
+  comp->Write();
+  daa2->Write();
+  daa2_with_gap->Write();
+  daa4->Write();
 
-	comp_Ncharge->Write();
-	daa2_Ncharge->Write();
-	daa4_Ncharge->Write();
-	daa2_with_gap_Ncharge->Write();
+  comp_Ncharge->Write();
+  daa2_Ncharge->Write();
+  daa4_Ncharge->Write();
+  daa2_with_gap_Ncharge->Write();
 
-	raa2_Ncharge->Write();
-	raa4_Ncharge->Write();
-	raa6_Ncharge->Write();
+  raa2_Ncharge->Write();
+  raa4_Ncharge->Write();
+  raa6_Ncharge->Write();
 
-	dnch->Write();
-	bhis->Write();
+  dnch->Write();
+  bhis->Write();
 
-	fout->Close();
+  fout->Close();
 
-	/*
-	for (int i = 0; i < 9; i++)
-	{
-		float a2 = comp[i]->GetBinContent(1);
-		float b4 = comp[i]->GetBinContent(2);
-		float c_2_4 = b4 - 2 * a2 * a2;
-		float v_2_4 = pow(-c_2_4, 0.25);
-		cout << endl << a2 << "     " << v_2_4 << endl;
-	}
-	*/
 }
 
 
-void parseampt(int file_n)
+void parseampt()
 {
   //Read in data file
   ifstream dataFile;
@@ -221,12 +198,12 @@ void parseampt(int file_n)
   //Skip the job if not dataFile
   if (!dataFile)
   {
-    cout << Form("--> File %i does not exist\n", file_n) << endl << endl;
+    cout << "--> File ana/ampt.dat does not exist" << endl << endl;
     return;
   }
   else
   {
-    cout << Form("--> Successfully opened file number %i\n", file_n) << endl << endl;
+    cout << "--> Successfully opened ana/ampt.dat" << endl << endl;
   }
 
   //In this while loop, program will read the data file line by line
@@ -372,13 +349,13 @@ void processEvent(vector<particle> nucleons, int n_charge)
   //six particle cumulant
 
   TComplex Qn_6, Q2n_6, Q3n_6;
-    Qn_6 = TComplex(Qx2,Qy2);
-    Q2n_6 = TComplex(Qx4,Qy4);
-    Q3n_6 = TComplex(Qx6,Qy6);
+  Qn_6 = TComplex(Qx2, Qy2);
+  Q2n_6 = TComplex(Qx4, Qy4);
+  Q3n_6 = TComplex(Qx6, Qy6);
 
   if (!(nucleons.size() < 6))
   {
-    float ave_6 = ave_6particle_correlation(Qn_6, Q2n_6, Q3n_6,(float)nucleons.size());
+    float ave_6 = ave_6particle_correlation(Qn_6, Q2n_6, Q3n_6, (float)nucleons.size());
     comp->Fill(4.0, ave_6);
     temp_raa6.push_back(ave_6);
   }
@@ -467,26 +444,26 @@ void processEvent(vector<particle> nucleons, int n_charge)
 
 bool test_eff_s(float pT, float eta)
 {
-    int pTbin = eff_fvtx_s->GetXaxis()->FindBin(pT);
+  int pTbin = eff_fvtx_s->GetXaxis()->FindBin(pT);
 
-    float n = eff_fvtx_s->GetBinContent(pTbin);
+  float n = eff_fvtx_s->GetBinContent(pTbin);
 
-    float test = frandom->GetRandom();
+  float test = frandom->GetRandom();
 
-    if (test < n) return true;
-    else return false;
+  if (test < n) return true;
+  else return false;
 }
 
 bool test_eff_n(float pT, float eta)
 {
-    int pTbin = eff_fvtx_n->GetXaxis()->FindBin(pT);
+  int pTbin = eff_fvtx_n->GetXaxis()->FindBin(pT);
 
-    float n = eff_fvtx_n->GetBinContent(pTbin);
+  float n = eff_fvtx_n->GetBinContent(pTbin);
 
-    float test = frandom->GetRandom();
+  float test = frandom->GetRandom();
 
-    if (test < n) return true;
-    else return false;
+  if (test < n) return true;
+  else return false;
 }
 
 
@@ -568,50 +545,50 @@ float ave_4particle_correlation(float Qxn, float Qyn, float Qx2n, float Qy2n, fl
   return numerator / denominator;
 }
 
-float ave_6particle_correlation(TComplex qn, TComplex q2n, TComplex q3n,float M)
+float ave_6particle_correlation(TComplex qn, TComplex q2n, TComplex q3n, float M)
 {
   TComplex temp1;
 
-    // first term
-    // |Qn|^6 + 9*|Q2n|^2|Qn|^2 - 6 x Re[Q2n x Qn x Qn* x Qn* x Qn*] / (Mx(M-1)x(M-2)x(M-3)x(M-4)x(M-5)
-    double term1a = TMath::Power((qn * TComplex::Conjugate(qn)), 3);
-    double term1b = 9.0 * q2n * TComplex::Conjugate(q2n) * qn * TComplex::Conjugate(qn);
-    temp1 = q2n * qn * TComplex::Conjugate(qn) * TComplex::Conjugate(qn) * TComplex::Conjugate(qn);
-    double term1c = -6.0 * temp1.Re();
-    double term1 = (term1a + term1b + term1c) / (M * (M - 1) * (M - 2) * (M - 3) * (M - 4) * (M - 5));
+  // first term
+  // |Qn|^6 + 9*|Q2n|^2|Qn|^2 - 6 x Re[Q2n x Qn x Qn* x Qn* x Qn*] / (Mx(M-1)x(M-2)x(M-3)x(M-4)x(M-5)
+  double term1a = TMath::Power((qn * TComplex::Conjugate(qn)), 3);
+  double term1b = 9.0 * q2n * TComplex::Conjugate(q2n) * qn * TComplex::Conjugate(qn);
+  temp1 = q2n * qn * TComplex::Conjugate(qn) * TComplex::Conjugate(qn) * TComplex::Conjugate(qn);
+  double term1c = -6.0 * temp1.Re();
+  double term1 = (term1a + term1b + term1c) / (M * (M - 1) * (M - 2) * (M - 3) * (M - 4) * (M - 5));
 
-    // second term
-    // 4 * [Re[Q3nQn*Qn*Qn*] - 3 Re[Q3nQ2n*Qn*]] / (M(M-1)(M-2)(M-3)(M-4)(M-5)
-    temp1 = q3n * TComplex::Conjugate(qn) * TComplex::Conjugate(qn) * TComplex::Conjugate(qn);
-    double term2a = temp1.Re();
-    temp1 = q3n * TComplex::Conjugate(q2n) * TComplex::Conjugate(qn);
-    double term2b = -3.0 * temp1.Re();
-    double term2 = 4.0 * (term2a + term2b) / (M * (M - 1) * (M - 2) * (M - 3) * (M - 4) * (M - 5));
+  // second term
+  // 4 * [Re[Q3nQn*Qn*Qn*] - 3 Re[Q3nQ2n*Qn*]] / (M(M-1)(M-2)(M-3)(M-4)(M-5)
+  temp1 = q3n * TComplex::Conjugate(qn) * TComplex::Conjugate(qn) * TComplex::Conjugate(qn);
+  double term2a = temp1.Re();
+  temp1 = q3n * TComplex::Conjugate(q2n) * TComplex::Conjugate(qn);
+  double term2b = -3.0 * temp1.Re();
+  double term2 = 4.0 * (term2a + term2b) / (M * (M - 1) * (M - 2) * (M - 3) * (M - 4) * (M - 5));
 
-    // third term
-    // +2 * (9*(M-4)*Re[Q2nQn*qn*] + 2 |Q3n|^2) / ((M(M-1)(M-2)(M-3)(M-4)(M-5))
-    temp1 = q2n * TComplex::Conjugate(qn) * TComplex::Conjugate(qn);
-    double term3a = 9.0 * (M - 4) * temp1.Re();
-    double term3b = 2.0 * q3n * TComplex::Conjugate(q3n);
-    double term3 = 2.0 * (term3a + term3b) / (M * (M - 1) * (M - 2) * (M - 3) * (M - 4) * (M - 5));
+  // third term
+  // +2 * (9*(M-4)*Re[Q2nQn*qn*] + 2 |Q3n|^2) / ((M(M-1)(M-2)(M-3)(M-4)(M-5))
+  temp1 = q2n * TComplex::Conjugate(qn) * TComplex::Conjugate(qn);
+  double term3a = 9.0 * (M - 4) * temp1.Re();
+  double term3b = 2.0 * q3n * TComplex::Conjugate(q3n);
+  double term3 = 2.0 * (term3a + term3b) / (M * (M - 1) * (M - 2) * (M - 3) * (M - 4) * (M - 5));
 
-    // fourth term
-    //double term4 = -9.0 * (TMath::Power(qn*TComplex::Conjugate(qn),2)+q2n*TComplex::Conjugate(q2n)) / (M*(M-1)*(M-2)*(M-3)*(M-5));
-    double term4 = -9.0 * (TMath::Power(qn * TComplex::Conjugate(qn), 2) + q2n * TComplex::Conjugate(q2n)) ;
-    term4 /= (M * (M - 1) * (M - 2) * (M - 3) * (M - 5));
+  // fourth term
+  //double term4 = -9.0 * (TMath::Power(qn*TComplex::Conjugate(qn),2)+q2n*TComplex::Conjugate(q2n)) / (M*(M-1)*(M-2)*(M-3)*(M-5));
+  double term4 = -9.0 * (TMath::Power(qn * TComplex::Conjugate(qn), 2) + q2n * TComplex::Conjugate(q2n)) ;
+  term4 /= (M * (M - 1) * (M - 2) * (M - 3) * (M - 5));
 
-    // fifth term
-    //double term5 = 18.0 * qn*TComplex::Conjugate(qn) / (M*(M-1)*(M-3)*(M-4));
-    double term5 = 18.0 * qn * TComplex::Conjugate(qn) ;
-    term5 /=  (M * (M - 1) * (M - 3) * (M - 4));
+  // fifth term
+  //double term5 = 18.0 * qn*TComplex::Conjugate(qn) / (M*(M-1)*(M-3)*(M-4));
+  double term5 = 18.0 * qn * TComplex::Conjugate(qn) ;
+  term5 /=  (M * (M - 1) * (M - 3) * (M - 4));
 
-    // sixth term
-    double term6 = -6.0 / ((M - 1) * (M - 2) * (M - 3));
+  // sixth term
+  double term6 = -6.0 / ((M - 1) * (M - 2) * (M - 3));
 
-    // cos(n(phi1+phi2+phi3-phi4-phi5-phi6))
-    double six = term1 + term2 + term3 + term4 + term5 + term6;
+  // cos(n(phi1+phi2+phi3-phi4-phi5-phi6))
+  double six = term1 + term2 + term3 + term4 + term5 + term6;
 
-    return (float)six;
+  return (float)six;
 }
 
 
