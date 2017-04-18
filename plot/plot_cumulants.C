@@ -29,47 +29,53 @@ void plot_cumulants()
 
   float v2_max = 0.1;
   int x_max = 140;   // PbPb: maximum 6000     pPb: 300
-  int bin_size = 50; // PbPb: maximum 100      pPb: 50
+  // int bin_size = 50; // PbPb: maximum 100      pPb: 50
+  int rebin = 5;
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b02_sigparton075_ptfilter_50M_set0.root";
-  // const char* lname = "AMPT -- d+Au 200 -- b<2 fm -- #sigma_{parton}=0.75 mb -- p_{T} filter";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=0.75 mb -- p_{T} filter";
   // const char* pname = "ampt_dau200_b02_sigparton075_ptfilter";
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b02_sigparton075_nofilter_50M_set1.root";
-  // const char* lname = "AMPT -- d+Au 200 -- b<2 fm -- #sigma_{parton}=0.75 mb -- no filter";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=0.75 mb -- no filter";
   // const char* pname = "ampt_dau200_b02_sigparton075_nofilter";
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b02_sigparton150_nofilter_50M_set2.root";
-  // const char* lname = "AMPT -- d+Au 200 -- b<2 fm -- #sigma_{parton}=1.50 mb -- no filter";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=1.50 mb -- no filter";
   // const char* pname = "ampt_dau200_b02_sigparton150_nofilter";
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b02_sigparton150_ptfilter_50M_set3.root";
-  // const char* lname = "AMPT -- d+Au 200 -- b<2 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
   // const char* pname = "ampt_dau200_b02_sigparton150_ptfilter";
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b20_sigparton150_ptfilter_50M_set4.root";
-  // const char* lname = "AMPT -- d+Au 200 -- b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
   // const char* pname = "ampt_dau200_b20_sigparton150_ptfilter";
 
-  const char* fname = "rootfiles/cumulants_ampt_pau200_b02_sigparton150_ptfilter_50M_set0.root";
-  const char* lname = "AMPT -- p+Au 200 -- b<2 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
-  const char* pname = "ampt_pau200_b02_sigparton150_ptfilter";
+  // const char* fname = "rootfiles/cumulants_ampt_pau200_b02_sigparton150_ptfilter_50M_set0.root";
+  // const char* lname = "AMPT -- p+Au 200 -- 50M b<2 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_pau200_b02_sigparton150_ptfilter";
+
+  const char* fname = "rootfiles/cumulants_ampt_dau200_b20_sigparton150_ptfilter_5M_set5.root";
+  const char* lname = "AMPT -- d+Au 200 -- 5M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  const char* pname = "ampt_dau200_b20_sigparton150_ptfilter_5M";
 
   TFile *file = TFile::Open(fname);
 
   TProfile* tp1f_raa6 = (TProfile*) file->Get("raa6_Ncharge");
   TProfile* tp1f_raa4 = (TProfile*) file->Get("raa4_Ncharge");
   TProfile* tp1f_raa2 = (TProfile*) file->Get("raa2_Ncharge");
-  TProfile* tp1f_daa4 = (TProfile*) file->Get("daa4_Ncharge");
-  TProfile* tp1f_daa2 = (TProfile*) file->Get("daa2_Ncharge");
   TProfile* tp1f_gapp = (TProfile*) file->Get("comp_Ncharge");
+
+  tp1f_raa6->Rebin(rebin);
+  tp1f_raa4->Rebin(rebin);
+  tp1f_raa2->Rebin(rebin);
+  tp1f_gapp->Rebin(rebin);
 
 
   TH1D* th1d_raa6 = (TH1D*) tp1f_raa6->ProjectionX("th1d_raa6");
   TH1D* th1d_raa4 = (TH1D*) tp1f_raa4->ProjectionX("th1d_raa4");
   TH1D* th1d_raa2 = (TH1D*) tp1f_raa2->ProjectionX("th1d_raa2");
-  TH1D* th1d_daa4 = (TH1D*) tp1f_daa4->ProjectionX("th1d_daa4");
-  TH1D* th1d_daa2 = (TH1D*) tp1f_daa2->ProjectionX("th1d_daa2");
   TH1D* th1d_gapp = (TH1D*) tp1f_gapp->ProjectionX("th1d_gapp");
 
   //----------------------------------------------------------------------------
@@ -145,7 +151,7 @@ void plot_cumulants()
   // v2 and sigma_v2
   TH1D* th1d_v2_mid = (TH1D*)th1d_v24->Clone("th1d_v2_mid");
   TH1D* th1d_v2_sigma = (TH1D*)th1d_v24->Clone("th1d_v2_sigma");
-  for (int i = 1; i < bin_size + 1; i++)
+  for (int i = 1; i <= th1d_v24->GetNbinsX(); i++)
   {
     double temp_1 = th1d_v24->GetBinContent(i);
     double temp_2 = th1d_v22->GetBinContent(i);
