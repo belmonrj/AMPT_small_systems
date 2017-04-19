@@ -1,0 +1,3 @@
+# ignore root build files
+*.d
+*.so
