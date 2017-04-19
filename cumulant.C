@@ -76,7 +76,7 @@ bool test_eff_s(float pT, float eta);
 bool test_eff_n(float pT, float eta);
 
 void parseampt();
-void processEvent(vector<particle> nucleons, int n_charge);
+void processEvent(vector<particle> nucleons);
 
 
 
@@ -233,7 +233,6 @@ void parseampt()
     int    nparttarginelas;
     double junk;
 
-    int n_charge = 0;
 
     //Get the header of each event
     dataFile >> evtnumber >> testnum >> nlist >> impactpar >> npartproj >> nparttarg >> npartprojelas >> npartprojinelas >> nparttargelas >> nparttarginelas >> junk;
@@ -279,11 +278,10 @@ void parseampt()
       if ((ifFVTXS(p.eta) && test_eff_s(p.pT, p.eta)) || (ifFVTXN(p.eta) && test_eff_n(p.pT, p.eta)))
       {
         all_particle.push_back(p);
-        n_charge++;
       }
     }
 
-    processEvent(all_particle, n_charge);
+    processEvent(all_particle);
     // cout << n_charge << endl;
     // cout << all_particle.size() << endl;
     dnch->Fill(all_particle.size());
@@ -295,7 +293,7 @@ void parseampt()
 
 
 // void processEvent(vector<particle> nucleons, int flag)
-void processEvent(vector<particle> nucleons, int n_charge)
+void processEvent(vector<particle> nucleons)
 {
   if (nucleons.size() < 2) return;
 
@@ -339,7 +337,7 @@ void processEvent(vector<particle> nucleons, int n_charge)
   //two particle with eta gap
   float ave_2_with_gap = with_gap_calculation(QxA, QyA, QxB, QyB, (float)pA.size(), (float)pB.size());
   comp->Fill(1.0, ave_2_with_gap);
-  comp_Ncharge->Fill(n_charge, ave_2_with_gap);
+  comp_Ncharge->Fill(nucleons.size(), ave_2_with_gap);
 
   //----------------------------------------------------------------------------------------
   //Reference flow
@@ -397,13 +395,13 @@ void processEvent(vector<particle> nucleons, int n_charge)
 
   raa6 = raa6 / temp_raa6.size();
 
-  raa2_Ncharge->Fill(n_charge, raa2);
-  raa4_Ncharge->Fill(n_charge, raa4);
-  raa6_Ncharge->Fill(n_charge, raa6);
+  raa2_Ncharge->Fill(nucleons.size(), raa2);
+  raa4_Ncharge->Fill(nucleons.size(), raa4);
+  raa6_Ncharge->Fill(nucleons.size(), raa6);
 
-  th2d_raa2_Ncharge->Fill(n_charge, raa2);
-  th2d_raa4_Ncharge->Fill(n_charge, raa4);
-  th2d_raa6_Ncharge->Fill(n_charge, raa6);
+  th2d_raa2_Ncharge->Fill(nucleons.size(), raa2);
+  th2d_raa4_Ncharge->Fill(nucleons.size(), raa4);
+  th2d_raa6_Ncharge->Fill(nucleons.size(), raa6);
 
   temp_raa2.clear();
   temp_raa4.clear();
@@ -421,7 +419,7 @@ void processEvent(vector<particle> nucleons, int n_charge)
     float def_ave_2 = def_ave_2particle_with_gap(ux2, uy2, QxB, QyB, (float)pB.size());
     // comp[flag]->Fill(4.0, def_ave_2);
     daa2_with_gap->Fill(pA[i].pT, def_ave_2);
-    daa2_with_gap_Ncharge->Fill(n_charge, def_ave_2);
+    daa2_with_gap_Ncharge->Fill(nucleons.size(), def_ave_2);
   }
 
   for (unsigned int i = 0; i < nucleons.size(); i++)
@@ -431,7 +429,7 @@ void processEvent(vector<particle> nucleons, int n_charge)
 
     float def_ave_2 = def_ave_2particle_correlation(ux2, uy2, Qx2, Qy2, (float)nucleons.size());
     daa2->Fill(nucleons[i].pT, def_ave_2);
-    daa2_Ncharge->Fill(n_charge, def_ave_2);
+    daa2_Ncharge->Fill(nucleons.size(), def_ave_2);
   }
 
   for (unsigned int i = 0; i < nucleons.size(); i++)
@@ -447,7 +445,7 @@ void processEvent(vector<particle> nucleons, int n_charge)
     // cout << setw(15) << def_ave_4 << setw(15) << ron_def_4 << endl;
     // comp[flag]->Fill(5.0, def_ave_4);
     daa4->Fill(nucleons[i].pT, def_ave_4);
-    daa4_Ncharge->Fill(n_charge, def_ave_4);
+    daa4_Ncharge->Fill(nucleons.size(), def_ave_4);
   }
 }
 
