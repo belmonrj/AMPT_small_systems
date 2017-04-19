@@ -42,15 +42,15 @@ rm input.ampt
 
 echo "200"				>> input.ampt		# EFRM (sqrt(S_NN) in GeV if FRAME is CMS)
 echo "CMS"				>> input.ampt		# FRAME
-echo "A"				>> input.ampt		# PROJ
+echo "P"				>> input.ampt		# PROJ
 echo "A"				>> input.ampt		# TARG
-echo "2"				>> input.ampt		# IAP (projectile A number) 
+echo "1"				>> input.ampt		# IAP (projectile A number) 
 echo "1"				>> input.ampt		# IZP (projectile Z number) 
 echo "197"				>> input.ampt		# IAT (target A number)     Au: 197 Pb: 208
 echo "79"				>> input.ampt		# IZT (target Z number)     Au: 79  Pb: 82
 echo $nevents			>> input.ampt		# NEVNT (total number of events)
 echo "0.0"				>> input.ampt		# BMIN (mininum impact parameter in fm) 
-echo "20.0"				>> input.ampt		# BMAX (maximum impact parameter in fm, also see below)
+echo "2.0"				>> input.ampt		# BMAX (maximum impact parameter in fm, also see below)
 echo "4"				>> input.ampt		# ISOFT (D=1): select Default AMPT or String Melting(see below)
 echo "150"				>> input.ampt		# NTMAX: number of timesteps (D=150), (D=3 off cascade)        -------
 echo "0.2"				>> input.ampt		# DT: timestep in fm (hadron cascade time= DT*NTMAX) (D=0.2)
@@ -97,12 +97,10 @@ echo "0"				>> input.ampt		# Flag for random orientation of reaction plane (D=0,
 echo ----RUNNING ANALYSIS----
 
 ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/cumulant.C .
-ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/parton_pplane.C .
 ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/range.h .
 ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_acc.root .
 ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_acc_n.root .
 root -b -q cumulant.C++
-root -b -q parton_pplane.C++
 
 
 ########################
@@ -110,10 +108,9 @@ root -b -q parton_pplane.C++
 ########################
 
 # now move all the desired output files to there final directories
-set finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dAu200"
+set finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/pAu200"
 
-mv six.root $finalOutDir"/cumulants_ampt_dau200_"$nexodus"_"$nproc".root"
-mv ppplane.root $finalOutDir"/pplane_ampt_dau200_"$nexodus"_"$nproc".root"
+mv six.root $finalOutDir"/cumulants_ampt_pau200_"$nexodus"_"$nproc".root"
 
 
 echo "---- DONE EXECUTING JOB "$nexodus" "$nproc" ----"

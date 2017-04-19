@@ -2,7 +2,7 @@
 
 @ nproc = $1
 @ nexodus = $2
-@ nevents = 5000
+@ nevents = 1000
 # @ nevents = 10
 
 #set the seed
@@ -44,8 +44,8 @@ echo "200"				>> input.ampt		# EFRM (sqrt(S_NN) in GeV if FRAME is CMS)
 echo "CMS"				>> input.ampt		# FRAME
 echo "A"				>> input.ampt		# PROJ
 echo "A"				>> input.ampt		# TARG
-echo "2"				>> input.ampt		# IAP (projectile A number) 
-echo "1"				>> input.ampt		# IZP (projectile Z number) 
+echo "197"				>> input.ampt		# IAP (projectile A number) 
+echo "79"				>> input.ampt		# IZP (projectile Z number) 
 echo "197"				>> input.ampt		# IAT (target A number)     Au: 197 Pb: 208
 echo "79"				>> input.ampt		# IZT (target Z number)     Au: 79  Pb: 82
 echo $nevents			>> input.ampt		# NEVNT (total number of events)
@@ -110,10 +110,10 @@ root -b -q parton_pplane.C++
 ########################
 
 # now move all the desired output files to there final directories
-set finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dAu200"
+set finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/AuAu200"
 
-mv six.root $finalOutDir"/cumulants_ampt_dau200_"$nexodus"_"$nproc".root"
-mv ppplane.root $finalOutDir"/pplane_ampt_dau200_"$nexodus"_"$nproc".root"
+mv six.root $finalOutDir"/cumulants_ampt_auau200_"$nexodus"_"$nproc".root"
+mv ppplane.root $finalOutDir"/pplane_ampt_auau200_"$nexodus"_"$nproc".root"
 
 
 echo "---- DONE EXECUTING JOB "$nexodus" "$nproc" ----"
