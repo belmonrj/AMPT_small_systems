@@ -9,7 +9,7 @@ Notification    = Never
 Executable   =  /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/sims/run_dau200.sh
 
  # The argument to pass to the executable.
-Arguments       = $(Process) 5
+Arguments       = $(Process) 6
 
 # The requirement line specifies which machines we want to
 # run this job on.  Any arbitrary classad expression can
@@ -34,13 +34,13 @@ Initialdir   = /phenix/hhj3/dcm07e/dAuEnergyScan/sims/
 Input           = /dev/null
 
 # The job's stdout is sent to this file.
-Output       = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_dau200_5.out.$(Process)
+Output       = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_dau200_6.out.$(Process)
 
 # The job's stderr is sent to this file.
-Error        = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_dau200_5.err.$(Process)
+Error        = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_dau200_6.err.$(Process)
 
 # The condor log file for this job, useful when debuggin
-Log          = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_dau200_5.log.$(Process)
+Log          = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_dau200_6.log.$(Process)
 
 # Email address to send notification to.
 #Notify_user     = darren.mcglinchey@colorado.edu
@@ -63,4 +63,4 @@ Requirements = (CPU_Experiment == "phenix")
 # job.  If a number is placed after the command (i.e. Queue 15)
 # then the job will be submitted N times.  Use the $(Process)
 # macro to make your input/output and log files unique.
-Queue 10000
+Queue 1000

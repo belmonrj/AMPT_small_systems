@@ -63,9 +63,6 @@ void  processEvent_ampt(int evtnumber, int index);
 
 
 
-
-
-
 //------------------------------------------------------------------------------
 //Global variables declarations
 int event_counter = 0;
@@ -95,6 +92,10 @@ TH1F *dhis_v2;
 TH1F *dhis_qn;
 TH1F *dhis_b;
 TH1F *dhis_eta;
+
+TH1F *nch;
+TH1F *nch_CNT;
+TH1F *nch_FVTX;
 
 TH2D *eff_fvtx_s;
 TH2D *eff_fvtx_n;
@@ -139,6 +140,11 @@ void parton_pplane()
   dhis_qn = new TH1F("dhis_qn", "dhis_qn", 200, 0, 20);
   dhis_b = new TH1F("dhis_b", "dhis_b", 50, 0, 20);
   dhis_eta = new TH1F("dhis_eta", "dhis_eta", 100, -10, 10);
+
+
+  nch = new TH1F("nch", ";N_{charge}", 400, -0.5, 399.5);
+  nch_CNT = new TH1F("nch_CNT", ";N_{charge}", 400, -0.5, 399.5);
+  nch_FVTX = new TH1F("nch_FVTX", ";N_{charge}", 400, -0.5, 399.5);
 
   TFile *f_fvtxs = new TFile("fvtx_acc.root");
   TFile *f_fvtxn = new TFile("fvtx_acc_n.root");
@@ -427,6 +433,7 @@ void  processEvent_ampt(int evtnumber, int index)
 {
 
   // calculate v2 vs eta
+  nch->Fill(hadrons.size());
   for (unsigned int i = 0; i < hadrons.size(); i++)
   {
     float v2 = TMath::Cos(2 * (hadrons[i].phi - psi2[evtnumber]));
@@ -435,6 +442,7 @@ void  processEvent_ampt(int evtnumber, int index)
 
 
   // calculate v2 vs N_{ch} in FVTX region (for cumulants)
+  nch_FVTX->Fill(hadrons_FVTX.size());
   epsilon2_nch->Fill(hadrons_FVTX.size(), ep2[evtnumber]);
   for (unsigned int i = 0; i < hadrons_FVTX.size(); i++)
   {
@@ -443,6 +451,7 @@ void  processEvent_ampt(int evtnumber, int index)
   }
 
   // Calculate v2 vs pT in CNT region
+  nch_CNT->Fill(hadrons_CNT.size());
   for (unsigned int i = 0; i < hadrons_CNT.size(); i++)
   {
     float v2 = TMath::Cos(2 * (hadrons_CNT[i].phi - psi2[evtnumber]));
