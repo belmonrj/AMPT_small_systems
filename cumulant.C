@@ -142,18 +142,18 @@ void cumulant()
   // 50, -0.5, 499.5, -10, 10
   // 100, -0.5, 5999.5, -10, 10   Pb+Pb
   // 200, -0.5, 199.5, -10, 10   d+Au
-  comp_Ncharge = new TProfile("comp_Ncharge", "comp_Ncharge", 400, -0.5, 399.5, -10, 10); //
-  daa2_Ncharge = new TProfile("daa2_Ncharge", "daa2_Ncharge", 400, -0.5, 399.5, -10, 10); //
-  daa4_Ncharge = new TProfile("daa4_Ncharge", "daa4_Ncharge", 400, -0.5, 399.5, -10, 10); //
-  daa2_with_gap_Ncharge = new TProfile("daa2_with_gap_Ncharge", "daa2_with_gap_Ncharge", 400, -0.5, 399.5, -10, 10); //
+  comp_Ncharge = new TProfile("comp_Ncharge", "comp_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  daa2_Ncharge = new TProfile("daa2_Ncharge", "daa2_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  daa4_Ncharge = new TProfile("daa4_Ncharge", "daa4_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  daa2_with_gap_Ncharge = new TProfile("daa2_with_gap_Ncharge", "daa2_with_gap_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
 
-  raa2_Ncharge = new TProfile("raa2_Ncharge", "raa2_Ncharge", 400, -0.5, 399.5, -10, 10); //
-  raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", 400, -0.5, 399.5, -10, 10); //
-  raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", 400, -0.5, 399.5, -10, 10); //
+  raa2_Ncharge = new TProfile("raa2_Ncharge", "raa2_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
 
-  th2d_raa2_Ncharge = new TH2D("th2d_raa2_Ncharge", "th2d_raa2_Ncharge", 400, -0.5, 399.5, 1000, -0.01, 0.01); //
-  th2d_raa4_Ncharge = new TH2D("th2d_raa4_Ncharge", "th2d_raa4_Ncharge", 400, -0.5, 399.5, 1000, -0.01, 0.01); //
-  th2d_raa6_Ncharge = new TH2D("th2d_raa6_Ncharge", "th2d_raa6_Ncharge", 400, -0.5, 399.5, 1000, -0.01, 0.01); //
+  th2d_raa2_Ncharge = new TH2D("th2d_raa2_Ncharge", "th2d_raa2_Ncharge", 1200, -0.5, 1199.5, 1000, -0.1, 0.1); //
+  th2d_raa4_Ncharge = new TH2D("th2d_raa4_Ncharge", "th2d_raa4_Ncharge", 1200, -0.5, 1199.5, 1000, -0.01, 0.01); //
+  th2d_raa6_Ncharge = new TH2D("th2d_raa6_Ncharge", "th2d_raa6_Ncharge", 1200, -0.5, 1199.5, 1000, -0.01, 0.01); //
 
   dnch = new TH1F("dnch", "dnch", 6000, -0.5, 5999.5);
   bhis = new TH1F("bhis", "bhis", 100, 0, 20);

@@ -117,8 +117,8 @@ void parton_pplane()
   // 50, -0.5, 199.5, -10, 10    d+Au
 
   // FVTX v2 vs Nch
-  v2pp_nch = new TProfile("v2pp_nch", "v2{PP}", 400, -0.5, 399.5, -1.1, 1.1); 
-  epsilon2_nch = new TProfile("epsilon2_nch", "epsilon2_nch", 400, -0.5, 399.5, -10, 10); //
+  v2pp_nch = new TProfile("v2pp_nch", "v2{PP}", 1200, -0.5, 1199.5, -1.1, 1.1); 
+  epsilon2_nch = new TProfile("epsilon2_nch", "epsilon2_nch", 1200, -0.5, 1199.5, -10, 10); //
 
   // CNT v2 vs pT
   for (int i = 0; i < 6; i++)
@@ -142,9 +142,9 @@ void parton_pplane()
   dhis_eta = new TH1F("dhis_eta", "dhis_eta", 100, -10, 10);
 
 
-  nch = new TH1F("nch", ";N_{charge}", 400, -0.5, 399.5);
-  nch_CNT = new TH1F("nch_CNT", ";N_{charge}", 400, -0.5, 399.5);
-  nch_FVTX = new TH1F("nch_FVTX", ";N_{charge}", 400, -0.5, 399.5);
+  nch = new TH1F("nch", ";N_{charge}", 1200, -0.5, 1199.5);
+  nch_CNT = new TH1F("nch_CNT", ";N_{charge}", 1200, -0.5, 1199.5);
+  nch_FVTX = new TH1F("nch_FVTX", ";N_{charge}", 1200, -0.5, 1199.5);
 
   TFile *f_fvtxs = new TFile("fvtx_acc.root");
   TFile *f_fvtxn = new TFile("fvtx_acc_n.root");
@@ -153,6 +153,9 @@ void parton_pplane()
   eff_fvtx_s->SetName("eff_fvtx_s");
   eff_fvtx_n = (TH2D*)f_fvtxn->Get("rh1");
   eff_fvtx_n->SetName("eff_fvtx_n");
+
+  eff_fvtx_s->Scale(1. / eff_fvtx_s->GetMaximum());
+  eff_fvtx_n->Scale(1. / eff_fvtx_n->GetMaximum());
 
   // set new random generator with unique seed
   rndm = new TRandom3(0);
