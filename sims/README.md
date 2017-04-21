@@ -30,3 +30,7 @@ Simulation log
 - set 0: 200 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 1k events/job, 1k jobs (1M total)
 - set 1: 200 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 500 events/job, 2k jobs (1M total)
     + After fixing parton_pplane.C
+
+** pPb 5.02 TeV **
+
+- set 0: 5020 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 1k events/job, 1k jobs (1M total)
