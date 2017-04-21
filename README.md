@@ -1,29 +1,42 @@
-# AMPT_small_systems
+# AMPT in Small Systems
 
-## How to get AMPT
+## How to Get AMPT
 
-This code is made to run on AMPT version "Ampt-v1.26t5-v2.26t5".  
-You can get this version of AMPT from the following link:
+We use AMPT version 2.26, with custom mofications to the calculation of the initial collision geometry. In collisions involving a 3He nucleus, its nucleon coordinates are sampled for each event from a realistic description of the nuclear wave function. This is also done for the case of deuteron, using the Hulthen wave function instead. For every other nuclear species, a Woods-Saxon distribution is used.
+
+Our modified version of AMPT can be found on RCF: INSERT PATH
+
+For reference, the latest version of AMPT can be found on the author's website:
 http://myweb.ecu.edu/linz/ampt/  
   
-With Javier's modified of Hulthen wavefunction input. The modified file could be found on rcf: /direct/phenix+u/pengqi/work/Ampt-v1.26t5-v2.26t5/hijing1.383_ampt.f  
+## How to Run AMPT
+1. Modify the configuration file "input.ampt", in the AMPT source folder. This is where the simulation settings are defined, including collision species, center-of-mass collision energy, parton interaction cross section, and hadron cascade duration. The input.ampt file contains documentation explaining what every parameter corresponds to. Some settings of relevance to us are:
+    + Parton cross section: The parton screening mass sets the parton cross section, according to the formula $\mu = \sqrt{\frac{31.2287}{\sigma_{parton}}}$. Setting the parton screening mass to a very large value effectively turns off partonic interactions. For example, a cross section of $\sigma=1.5$ mb corresponds to a parton screening mass of 4.5628
+    + Duration of hadron scattering: Setting NTMAX = 3 turns off hadronic scattering
+
+2. The nucleon-nucleon interaction cross section is the only parameter that cannot be adjusted in the "input.ampt" file. It is set by default to $\sigma = 42.3$ mb for collisions at $\sqrt{s_{NN}} = 200$ GeV, and should only be changed when running AMPT at other collision energies, as discussed in https://arxiv.org/abs/1512.06949. To do this, modify line 558 of hijing1.383_ampt.f
+
+3. Once the desired settings have been specified, run AMPT from its source folder with the command "./exec $<$integer$>$", where the integer is used as a seed for the random number generator.
+
+4. The result files can be found in the /ana subdirectory. Of the many output files, we use the following for flow analyses
+    + npart-xy.dat $\rightarrow$ Initial nucleon coordinates
+    + parton-initial-afterPropagation.dat $\rightarrow$ Parton coordinates after string melting
+    + ampt.dat $\rightarrow$ Momenta and coordinates of final state particles
+    
+# How to Run AMPT on RCF
+
+The best way to run AMPT on RCF is to automate the procedure described above using a script, which can then be run on Condor to generate the desired number of events. Running AMPT takes time, and no more than a few thousand events per Condor job are recommended.
+
+The following are a sample shell script and Condor submission file to run AMPT:
   
-## Run on RCF
-To run these code on RCF, a shell script file and a "submit file" are required. Examples could be found here:  
++ Shell Script:      /direct/phenix+u/pengqi/work/run_ampt/run_backup.sh  
++ Condor Submission: /direct/phenix+u/pengqi/work/run_ampt/submit_backup  
   
-.sh:    /direct/phenix+u/pengqi/work/run_ampt/run_backup.sh  
-submit: /direct/phenix+u/pengqi/work/run_ampt/submit_backup  
+The shell script writes out the input file "ampt.input", runs AMPT, and runs analysis code on the resulting output. The Condor file controls the number of submitted jobs.
   
-".sh" file contains everything from "input.ampt". You can edit collision energy, collision system, # events per job, hadronic scattering and partonic scattering.  
-"submit" file controls number of jobs to be submitted.  
-  
-Put the .C files into AMPT folder, then use command "condor_submit submit_backup" to submit jobs.  
-  
-  
-  
-  
-  
-## Description of each file
+## Running a Flow Analysis on AMPT Output
+
+The following subsections describe the various analysis macros contained in this repository, which run on the output files from AMPT. Each macro implements a particular way of calculating azimuthal anisotropy coefficients, including calculations relative to the event plane, the nucleon participant plane, the parton participant plane, and multi-particle cumulants.
 
 ### event_plane.C
 
