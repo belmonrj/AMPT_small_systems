@@ -50,7 +50,7 @@ echo "197"				>> input.ampt		# IAT (target A number)     Au: 197 Pb: 208
 echo "79"				>> input.ampt		# IZT (target Z number)     Au: 79  Pb: 82
 echo $nevents			>> input.ampt		# NEVNT (total number of events)
 echo "0.0"				>> input.ampt		# BMIN (mininum impact parameter in fm) 
-echo "20.0"				>> input.ampt		# BMAX (maximum impact parameter in fm, also see below)
+echo "2.0"				>> input.ampt		# BMAX (maximum impact parameter in fm, also see below)
 echo "4"				>> input.ampt		# ISOFT (D=1): select Default AMPT or String Melting(see below)
 echo "150"				>> input.ampt		# NTMAX: number of timesteps (D=150), (D=3 off cascade)        -------
 echo "0.2"				>> input.ampt		# DT: timestep in fm (hadron cascade time= DT*NTMAX) (D=0.2)
