@@ -17,6 +17,7 @@ Simulation log
     + Modified parton_pplane.C to use particles in FVTX range for Nch dependence
 - set 7: 200 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 5k events/job, 1k jobs (5M total)
     + Fixed parton_pplane.C to normalize FVTX pT dep efficiency
+- set 8: 200 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
 
 
 ** pAu 200 GeV **
@@ -27,5 +28,5 @@ Simulation log
 ** AuAu 200 GeV **
 
 - set 0: 200 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 1k events/job, 1k jobs (1M total)
-- set 0: 200 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 1k events/job, 1k jobs (1M total)
+- set 1: 200 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 500 events/job, 2k jobs (1M total)
     + After fixing parton_pplane.C

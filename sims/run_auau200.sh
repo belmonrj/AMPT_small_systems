@@ -2,7 +2,7 @@
 
 @ nproc = $1
 @ nexodus = $2
-@ nevents = 1000
+@ nevents = 500
 # @ nevents = 10
 
 #set the seed
