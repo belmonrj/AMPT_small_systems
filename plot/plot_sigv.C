@@ -37,21 +37,31 @@ using namespace std;
 void plot_sigv()
 {
   gStyle->SetOptStat(0);
-
+gStyle->SetErrorX(0);
 
   //==========================================================================//
   // SET RUNNING CONDITIONS
   //==========================================================================//
 
-  float v2_max = 0.1;
-  int x_max = 140;   // PbPb: maximum 6000     pPb: 300
-  // int bin_size = 50; // PbPb: maximum 100      pPb: 50
-  int rebin = 4;
+  float v2_max = 0.079;
+  // int x_max = 140;   // PbPb: maximum 6000     pPb: 300
+  // int rebin = 4;
+  int x_max = 1000;   // PbPb: maximum 6000     pPb: 300
+  int rebin = 20;
 
-  const char* cFilename = "rootfiles/cumulants_ampt_dau200_b20_sigparton150_ptfilter_50M_set5.root";
-  const char* pFilename = "rootfiles/pplane_ampt_dau200_b20_sigparton150_ptfilter_50M_set5.root";
-  const char* lname = "AMPT -- d+Au 200 -- 50M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
-  const char* pname = "ampt_dau200_b20_sigparton150_ptfilter_50M_rebin";
+  double deltav = 0; // nonflow delta^2 value
+
+  bool printPlots = true;
+
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau200_b02_sigparton150_ptfilter_50M_set8.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau200_b02_sigparton150_ptfilter_50M_set8.root";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_dau200_b02_sigparton150_ptfilter_50M_rebin";
+
+  const char* cFilename = "rootfiles/cumulants_ampt_auau200_b20_sigparton150_ptfilter_1M_set1.root";
+  const char* pFilename = "rootfiles/pplane_ampt_auau200_b20_sigparton150_ptfilter_1M_set1.root";
+  const char* lname = "AMPT -- Au+Au 200 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  const char* pname = "ampt_auau200_b20_sigparton150_ptfilter_1M_rebin";
 
 
   //==========================================================================//
@@ -101,7 +111,7 @@ void plot_sigv()
   }
 
   TProfile* tp1f_epsilon2_nch = (TProfile*) pfile->Get("epsilon2_nch");
-  TProfile* tp1f_v2pp = (TProfile*) pfile->Get("v2s");
+  TProfile* tp1f_v2pp = (TProfile*) pfile->Get("v2pp_nch");
 
   tp1f_epsilon2_nch->Rebin(rebin);
   tp1f_v2pp->Rebin(rebin);
@@ -111,6 +121,52 @@ void plot_sigv()
 
   TH1D* th1d_epsilon2 = (TH1D*) tp1f_epsilon2_nch->ProjectionX("th1d_epsilon2");
   TH1D* th1d_v2pp = (TH1D*) tp1f_v2pp->ProjectionX("th1d_v2pp");
+
+
+  //==========================================================================//
+  // CALCULATE V2{6}
+  //==========================================================================//
+
+  // <<6>>
+  TH1D* th1d_aa6 = (TH1D*)th1d_raa6->Clone("th1d_aa6");
+
+  // 9*<<2>><<4>>
+  TH1D* th1d_aa4 = (TH1D*)th1d_raa4->Clone("th1d_aa4");
+  th1d_aa4->Multiply(th1d_raa2);
+  th1d_aa4->Scale(9.0);
+
+  // 12*<<2>>^3
+  TH1D* th1d_aa2 = (TH1D*)th1d_raa2->Clone("th1d_aa2");
+  th1d_aa2->Multiply(th1d_raa2);
+  th1d_aa2->Multiply(th1d_raa2);
+  th1d_aa2->Scale(12.0);
+
+  // calculate c_{2}{6} = (<<6>> - 9<<2>><<4>> + 12<<2>>^3)
+  TH1D* th1d_c26 = (TH1D*)th1d_aa6->Clone("th1d_c26");
+  th1d_c26->Add(th1d_aa4, -1.0);
+  th1d_c26->Add(th1d_aa2, 1.0);
+
+  // calculate v_{2}{6} = (1/4*c26)^{1/6}
+  TH1D* th1d_v26 = (TH1D*)th1d_c26->Clone("th1d_v26");
+  for (int i = 1; i <= th1d_v26->GetNbinsX(); i++)
+  {
+    double temp_1 = th1d_c26->GetBinContent(i);
+    double erro_1 = th1d_c26->GetBinError(i);
+
+    if (temp_1 <= 0)
+    { 
+      th1d_v26->SetBinContent(i, 0);
+      th1d_v26->SetBinError(i, 0);
+    }
+    else
+    {
+      double temp_2 = pow(0.25*temp_1, 1./6.);
+      // double erro_2 = (1./6.) * erro_1 * abs(temp_2) / (0.25*abs(temp_1));
+      double erro_2 = pow(0.25*erro_1, 1/6.);
+      th1d_v26->SetBinContent(i, temp_2);
+      // th1d_v26->SetBinError(i, erro_2);
+    }
+  }
 
   //==========================================================================//
   // CALCULATE V2{4}
@@ -204,8 +260,8 @@ void plot_sigv()
 
     if (v24 > 0)
     {
-      double v2_mid = 0.5 * (v22 * v22 + v24 * v24);
-      double v2_sigma = 0.5 * (v22 * v22 - v24 * v24);
+      double v2_mid = (v22 * v22 + v24 * v24) / (2 + deltav * deltav);
+      double v2_sigma = (v22 * v22 - v24 * v24) / (2 + deltav * deltav);
       v2_mid = TMath::Sqrt(v2_mid);
       if (v2_sigma > 0) v2_sigma = TMath::Sqrt(v2_sigma);
       else v2_sigma = -9999;
@@ -231,7 +287,7 @@ void plot_sigv()
     if ( e2 > 0 )
     {
       // by default, tprofiles store sigma / sqrt(N)
-      th1d_sigee->SetBinContent(i, sig*sqrt(n) / e2);
+      th1d_sigee->SetBinContent(i, sig * sqrt(n) / e2);
     }
   }
 
@@ -267,7 +323,8 @@ void plot_sigv()
   TH1D *axiscomp = new TH1D("axiscomp", "", 100, 0, x_max);
   axiscomp->GetXaxis()->SetTitle("N_char");
   axiscomp->GetYaxis()->SetTitle("v_{2}");
-  axiscomp->GetYaxis()->SetRangeUser(0.0, 0.1);
+  // axiscomp->GetYaxis()->SetRangeUser(0.0, 0.1);
+  axiscomp->GetYaxis()->SetRangeUser(0.0, v2_max);
   axiscomp->GetXaxis()->SetLabelFont(62);
   axiscomp->GetXaxis()->SetTitleFont(62);
   axiscomp->GetYaxis()->SetLabelFont(62);
@@ -291,45 +348,58 @@ void plot_sigv()
   axisc24->GetXaxis()->SetTitleSize(0.03);
 
   th1d_v2pp->SetMarkerStyle(33);
-  th1d_v2pp->SetMarkerColor(1);
+  th1d_v2pp->SetMarkerColorAlpha(kBlack, 0.8);
+  th1d_v2pp->SetLineColor(kBlack);
   th1d_v2pp->SetMarkerSize(1.5);
 
-  th1d_v2_mid->SetMarkerStyle(kOpenDiamond);
+  th1d_v2_mid->SetMarkerStyle(kFullDiamond);
   th1d_v2_mid->SetMarkerSize(1.5);
-  th1d_v2_mid->SetMarkerColor(kBlack);
-  th1d_v2_mid->SetLineColor(kBlack);
+  th1d_v2_mid->SetMarkerColorAlpha(kMagenta+2, 0.8);
+  th1d_v2_mid->SetLineColor(kMagenta+2);
 
-  th1d_v24->SetMarkerStyle(25);
-  th1d_v24->SetMarkerColor(kBlue);
+  th1d_v26->SetMarkerStyle(kFullStar);
+  th1d_v26->SetMarkerSize(1.5);
+  th1d_v26->SetMarkerColorAlpha(kGreen+2, 0.8);
+  th1d_v26->SetLineColor(kGreen+2);
+
+  th1d_v24->SetMarkerStyle(kFullSquare);
+  th1d_v24->SetMarkerColorAlpha(kBlue, 0.8);
   th1d_v24->SetLineColor(kBlue);
 
   th1d_v22gap->SetMarkerStyle(24);
-  th1d_v22gap->SetMarkerColor(kRed);
+  th1d_v22gap->SetMarkerColorAlpha(kRed, 0.8);
   th1d_v22gap->SetLineColor(kRed);
 
   th1d_v22->SetMarkerStyle(20);
-  th1d_v22->SetMarkerColor(kRed);
+  th1d_v22->SetMarkerColorAlpha(kRed, 0.8);
   th1d_v22->SetLineColor(kRed);
 
-  th1d_sigvv->SetMarkerStyle(kOpenSquare);
-  th1d_sigvv->SetMarkerColor(kBlue);
+  th1d_sigvv->SetMarkerStyle(kFullSquare);
+  th1d_sigvv->SetMarkerColorAlpha(kBlue, 0.8);
   th1d_sigvv->SetLineColor(kBlue);
 
   th1d_sigee->SetMarkerStyle(kFullCircle);
-  th1d_sigee->SetMarkerColor(kBlack);
+  th1d_sigee->SetMarkerColorAlpha(kBlack, 0.8);
   th1d_sigee->SetLineColor(kBlack);
 
-  TLegend *leg1 = new TLegend(0.2, 0.65, 0.8, 0.96);
+  TLatex lt;
+  lt.SetNDC();
+  lt.SetTextAlign(22);
+
+  // TLegend *leg1 = new TLegend(0.2, 0.7, 0.8, 0.96);
+  TLegend *leg1 = new TLegend(0.35, 0.04, 0.85, 0.24);
   leg1->SetFillStyle(0);
   leg1->SetBorderSize(0);
   leg1->SetTextFont(62);
   leg1->SetTextSize(0.04);
-  leg1->SetHeader(lname);
-  leg1->AddEntry(th1d_v24, "v_{2}{4}", "p");
-  leg1->AddEntry(th1d_v22, "v_{2}{2}", "p");
-  // leg1->AddEntry(th1d_v22gap, "v_{2}{2, |#Delta#eta|>2}", "p");
+  // leg1->SetHeader(lname);
+  leg1->SetNColumns(2);
+  leg1->AddEntry(th1d_v22, "v_{2}{2} = #sqrt{v_{2}^{2} + #sigma_{v_{2}}^{2} + #delta^{2}}", "p");
   leg1->AddEntry(th1d_v2pp, "v_{2}{PP}", "p");
-  leg1->AddEntry(th1d_v2_mid, "v_{2} = [0.5*(v_{2}{2}^{2} + v_{2}{4}^{2})]^{1/2}", "p");
+  leg1->AddEntry(th1d_v24, "v_{2}{4} = #sqrt{v_{2}^{2} - #sigma_{v_{2}}^{2}}", "p");
+  leg1->AddEntry(th1d_v2_mid, Form("v_{2} (#delta / v_{2} = %.2f)", deltav), "p");
+  leg1->AddEntry(th1d_v26, "v_{2}{6}", "p");
+  // leg1->AddEntry(th1d_v22gap, "v_{2}{2, |#Delta#eta|>2}", "p");
 
   TLegend *leg2 = new TLegend(0.2, 0.85, 0.8, 0.98);
   leg2->SetFillStyle(0);
@@ -338,26 +408,28 @@ void plot_sigv()
   leg2->SetTextSize(0.04);
   leg2->SetNColumns(2);
   leg2->AddEntry(th1d_sigee, "#sigma_{#epsilon_{2}} / #epsilon_{2}", "P");
-  leg2->AddEntry(th1d_sigvv, "#sigma_{v_{2}} / v_{2}", "P");
+  leg2->AddEntry(th1d_sigvv, Form("#sigma_{v_{2}} / v_{2} (#delta / v_{2} = %.2f)", deltav), "P");
 
   //-- plot
   pcomp->cd();
   axiscomp->Draw();
 
-  th1d_v2pp->Draw("psame");
+  th1d_v2pp->Draw("p,same");
   // th1d_v22gap->Draw("p,same");
+  th1d_v26->Draw("p,same");
   th1d_v24->Draw("p,same");
   th1d_v22->Draw("p,same");
-  th1d_v2_mid->Draw("p, same");
+  th1d_v2_mid->Draw("p,same");
 
   leg1->Draw("same");
+  lt.DrawLatex(0.5, 0.95, lname);
 
   //-- ratio
   pcompc24->cd();
   axisc24->Draw();
 
-  th1d_sigvv->Draw("p, same");
-  th1d_sigee->Draw("p, same");
+  th1d_sigvv->Draw("p,same");
+  th1d_sigee->Draw("p,same");
 
   leg2->Draw("same");
 
@@ -367,7 +439,13 @@ void plot_sigv()
   //==========================================================================//
   // PRINT PLOTS
   //==========================================================================//
+  if ( printPlots )
+  {
+    cout << endl;
+    cout << "--> Printing plots" << endl;
 
+    cv24->Print(Form("pdfs/sigvv_%s.pdf", pname));
+  }
 
 
   //----------------------------------------------------------------------------
