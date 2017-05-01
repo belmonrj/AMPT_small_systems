@@ -41,7 +41,7 @@ using namespace std;
 // Function Prototypes
 
 void processEvent(int index);
-void parseampt(int energyidx = 0)
+void parseampt(int energyidx);
 
 bool test_eff_s(float pT, float eta);
 bool test_eff_n(float pT, float eta);
@@ -61,6 +61,7 @@ TProfile* v2ep_fvtxs_eta[NCENT];
 TProfile* v2ep_bbcs_eta[NCENT];
 TProfile* res_comp[NCENT];
 TH1D* nch_eta[NCENT];
+TH1D* nch_bbcs[NCENT];
 
 TH1F* dhis_bbcs;
 TH1F* hcount;
@@ -107,11 +108,16 @@ void event_plane(int energy = 200)
                                     NETABINS, etalo, etahi, -1.1, 1.1);
 
     // resolution calculation
-    res_comp[i] = new TProfile(Form("res_comp_%i"), "", 3, 0.5, 3.5, -1.0, 1.0);
+    res_comp[i] = new TProfile(Form("res_comp_%i", i), "", 3, 0.5, 3.5, -1.0, 1.0);
 
     // <N_ch> vs eta
     nch_eta[i] = new TH1D(Form("nch_eta_%i", i), ";#eta;N_{ch}",
                                     200, -5.0, 5.0);
+
+    // dist of N_ch in BBCS 
+    nch_bbcs[i] = new TH1D(Form("nch_bbcs_%i", i), ";N_{ch}",
+                                    NNCHBINS, nchlo, nchhi);
+
   } // i
 
 
@@ -123,7 +129,7 @@ void event_plane(int energy = 200)
 
 
   // run over the data
-  parseampt();
+  parseampt(eidx);
 
 
 
@@ -138,6 +144,8 @@ void event_plane(int energy = 200)
     v2ep_fvtxs_eta[i]->Write();
     v2ep_bbcs_eta[i]->Write();
     res_comp[i]->Write();
+    nch_eta[i]->Write();
+    nch_bbcs[i]->Write();
   }
   hcount->Write();
   dhis_bbcs->Write();
@@ -146,7 +154,7 @@ void event_plane(int energy = 200)
 }
 
 //------------------------------------------------------------------------------
-void parseampt(int energyidx = 0)
+void parseampt(int energyidx)
 {
   //Read in data file
   ifstream dataFile;
@@ -176,7 +184,6 @@ void parseampt(int energyidx = 0)
     double junk;
 
     int ct_bbcs = 0;
-    int ct_fvtxs = 0;
 
     //Get the header of each event
     dataFile >> evtnumber >> testnum >> nlist >> impactpar >> npartproj >> nparttarg >> npartprojelas >> npartprojinelas >> nparttargelas >> nparttarginelas >> junk;
@@ -236,7 +243,6 @@ void parseampt(int energyidx = 0)
       if ( test_eff_s(p.pT, p.eta) )
       {
         pA.push_back(p);
-        ct_fvtxs++;
         hcount->Fill(1);
       }
     }
@@ -352,6 +358,8 @@ void  processEvent(int index)
   {
     nch_eta[index]->Fill(hadrons.at(i).eta);
   }
+
+  nch_bbcs[index]->Fill(pB.size());
 
   res_comp[index]->Fill(1.0, TMath::Cos(2 * (psiA - psiB)));
   res_comp[index]->Fill(2.0, TMath::Cos(2 * (psiA - psiC)));

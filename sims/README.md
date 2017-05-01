@@ -19,6 +19,9 @@ Simulation log
     + Fixed parton_pplane.C to normalize FVTX pT dep efficiency
 - set 8: 200 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
 
+- set 10: 200 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
+    + After modifying cumulants.C, parton_pplane.C, event_plane.C
+
 
 ** pAu 200 GeV **
 
