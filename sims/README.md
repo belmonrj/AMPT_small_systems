@@ -35,3 +35,8 @@ Simulation log
 
 - set 0: 5020 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 1k events/job, 1k jobs (1M total)
 - set 0: 5020 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 5k events/job, 2k jobs (10M total)
+
+** PbPb 5.02 TeV **
+
+- set 0: 5020 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 500 events/job, 2k jobs (1M total)
+

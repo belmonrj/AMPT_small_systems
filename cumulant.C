@@ -5,6 +5,8 @@
 //
 // Author: P. Yin
 //-----------------------------------------------
+// Modified: D. McGlinchey
+//-----------------------------------------------
 
 #include <iostream>
 #include <iomanip>
@@ -28,29 +30,12 @@
 #include "TH2.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TRandom3.h"
 
 #include "range.h"
+#include "consts.h"
 
 using namespace std;
-
-//-----------------------------------------------------------------------------------
-//Structure declarations
-struct particle
-{
-  int   id;
-  float px;
-  float py;
-  float pz;
-  float m;
-  float x;
-  float y;
-  float z;
-  float t;
-  float eta;
-  float phi;
-  float pT;
-  float rsquare;
-};
 
 
 //-----------------------------------------------------------------------------------
@@ -121,10 +106,6 @@ TH2D* th2d_raa6_Ncharge;
 TH1F* dnch;
 TH1F* bhis;
 
-TH1D *eff_fvtx_s;
-TH1D *eff_fvtx_n;
-
-TF1 *frandom;
 
 
 
@@ -142,32 +123,22 @@ void cumulant()
   // 50, -0.5, 499.5, -10, 10
   // 100, -0.5, 5999.5, -10, 10   Pb+Pb
   // 200, -0.5, 199.5, -10, 10   d+Au
-  comp_Ncharge = new TProfile("comp_Ncharge", "comp_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
-  daa2_Ncharge = new TProfile("daa2_Ncharge", "daa2_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
-  daa4_Ncharge = new TProfile("daa4_Ncharge", "daa4_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
-  daa2_with_gap_Ncharge = new TProfile("daa2_with_gap_Ncharge", "daa2_with_gap_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  comp_Ncharge = new TProfile("comp_Ncharge", "comp_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+  daa2_Ncharge = new TProfile("daa2_Ncharge", "daa2_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+  daa4_Ncharge = new TProfile("daa4_Ncharge", "daa4_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+  daa2_with_gap_Ncharge = new TProfile("daa2_with_gap_Ncharge", "daa2_with_gap_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
 
-  raa2_Ncharge = new TProfile("raa2_Ncharge", "raa2_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
-  raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
-  raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", 1200, -0.5, 1199.5, -10, 10); //
+  raa2_Ncharge = new TProfile("raa2_Ncharge", "raa2_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+  raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+  raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
 
-  th2d_raa2_Ncharge = new TH2D("th2d_raa2_Ncharge", "th2d_raa2_Ncharge", 1200, -0.5, 1199.5, 1000, -0.1, 0.1); //
-  th2d_raa4_Ncharge = new TH2D("th2d_raa4_Ncharge", "th2d_raa4_Ncharge", 1200, -0.5, 1199.5, 1000, -0.01, 0.01); //
-  th2d_raa6_Ncharge = new TH2D("th2d_raa6_Ncharge", "th2d_raa6_Ncharge", 1200, -0.5, 1199.5, 1000, -0.01, 0.01); //
+  th2d_raa2_Ncharge = new TH2D("th2d_raa2_Ncharge", "th2d_raa2_Ncharge", NNCHBINS, nchlo, nchhi, 1000, -0.1, 0.1); //
+  th2d_raa4_Ncharge = new TH2D("th2d_raa4_Ncharge", "th2d_raa4_Ncharge", NNCHBINS, nchlo, nchhi, 1000, -0.01, 0.01); //
+  th2d_raa6_Ncharge = new TH2D("th2d_raa6_Ncharge", "th2d_raa6_Ncharge", NNCHBINS, nchlo, nchhi, 1000, -0.01, 0.01); //
 
   dnch = new TH1F("dnch", "dnch", 6000, -0.5, 5999.5);
   bhis = new TH1F("bhis", "bhis", 100, 0, 20);
 
-  TFile *f_fvtxs = new TFile("fvtx_acc.root");
-  TFile *f_fvtxn = new TFile("fvtx_acc_n.root");
-
-  eff_fvtx_s = (TH1D*)f_fvtxs->Get("rh1");
-  eff_fvtx_n = (TH1D*)f_fvtxn->Get("rh1");
-
-  eff_fvtx_s->Scale(1. / eff_fvtx_s->GetMaximum());
-  eff_fvtx_n->Scale(1. / eff_fvtx_n->GetMaximum());
-
-  frandom = new TF1("frandom", "1", 0.0, 1.0);
 
   // Parse ampt.dat (run over all events)
   parseampt();
@@ -455,36 +426,6 @@ void processEvent(vector<particle> nucleons)
 
 //----------------------------------------------------------------------------------------
 // Helper Functions
-
-bool test_eff_s(float pT, float eta)
-{
-  int pTbin = eff_fvtx_s->GetXaxis()->FindBin(pT);
-
-  float n = eff_fvtx_s->GetBinContent(pTbin);
-
-  float test = frandom->GetRandom();
-
-  if (test < n) return true;
-  else return false;
-}
-
-bool test_eff_n(float pT, float eta)
-{
-  int pTbin = eff_fvtx_n->GetXaxis()->FindBin(pT);
-
-  float n = eff_fvtx_n->GetBinContent(pTbin);
-
-  float test = frandom->GetRandom();
-
-  if (test < n) return true;
-  else return false;
-}
-
-
-
-
-
-
 float def_ave_2particle_with_gap(float uxn, float uyn, float QxB, float QyB, float M)
 {
   float numerator = uxn * QxB + uyn * QyB;

@@ -3,6 +3,8 @@
 //
 // Author: P. Yin
 //-----------------------------------------------
+// Modified: D. McGlinchey
+//-----------------------------------------------
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -27,27 +29,10 @@
 #include "TRandom3.h"
 
 #include "range.h"
+#include "consts.h"
 
 using namespace std;
 
-//------------------------------------------------------------------------------
-//Structure declarations
-struct particle
-{
-  int   id;
-  float px;
-  float py;
-  float pz;
-  float m;
-  float x;
-  float y;
-  float z;
-  float t;
-  float eta;
-  float phi;
-  float pT;
-  float rsquare;
-};
 
 //------------------------------------------------------------------------------
 // Function Prototypes
@@ -56,7 +41,7 @@ bool test_eff_s(float pT, float eta);
 bool test_eff_n(float pT, float eta);
 
 void parse_afterPropagation_file();
-void parse_ampt_file();
+void parse_ampt_file(int energyidx);
 
 void  processEvent_melting();
 void  processEvent_ampt(int evtnumber, int index);
@@ -82,8 +67,8 @@ vector<particle> hadrons_FVTX;
 //Graphs declarations
 
 TProfile* v2pp_nch;
-TProfile* v2pp_pt[6];
-TProfile* v2pp_eta[6];
+TProfile* v2pp_pt[NCENT];
+TProfile* v2pp_eta[NCENT];
 
 TProfile* epsilon2_nch;
 
@@ -97,41 +82,46 @@ TH1F *nch;
 TH1F *nch_CNT;
 TH1F *nch_FVTX;
 
-TH2D *eff_fvtx_s;
-TH2D *eff_fvtx_n;
-
-TRandom3 *rndm;
-
 //-----------------------------------------------------------------------------------
-void parton_pplane()
+void parton_pplane(int energy = 200)
 {
   TFile *fout = new TFile("ppplane.root", "RECREATE");
 
-  const int NPTBINS = 16;
-  double ptlim[NPTBINS + 1] = {
-    0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0,
-    2.5, 3.0, 3.5, 4.0, 4.5, 5.0
-  };
+  // get the energy index for defining centrality limits
+  int eidx = -1;
+  if ( energy == 200)
+    eidx = 0;
+  else if ( energy == 62 )
+    eidx = 1;
+  else if ( energy == 39 )
+    eidx = 2;
+  else if ( energy == 20 )
+    eidx = 3;
+  else
+  {
+    cout << "WARNING! Centrality limits are not defined for input "
+         << "energy=" << energy << " ... using binning for 200 GeV ..."
+         << endl;
+    eidx = 0;
+  }
 
-  // 100, -0.5, 5999.5, -10, 10 Pb+Pb
-  // 50, -0.5, 199.5, -10, 10    d+Au
 
   // FVTX v2 vs Nch
-  v2pp_nch = new TProfile("v2pp_nch", "v2{PP}", 1200, -0.5, 1199.5, -1.1, 1.1); 
-  epsilon2_nch = new TProfile("epsilon2_nch", "epsilon2_nch", 1200, -0.5, 1199.5, -10, 10); //
+  v2pp_nch = new TProfile("v2pp_nch", "v2{PP}", NNCHBINS, nchlo, nchhi, -1.1, 1.1);
+  epsilon2_nch = new TProfile("epsilon2_nch", "epsilon2_nch", NNCHBINS, nchlo, nchhi, -10, 10); //
 
   // CNT v2 vs pT
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < NCENT; i++)
   {
     v2pp_pt[i] = new TProfile(Form("v2pp_pt_%i", i), ";p_{T} [GeV/c];v_{2}",
                               NPTBINS, ptlim, -1.1, 1.1);
   }
 
   // v2 vs eta
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < NCENT; i++)
   {
     v2pp_eta[i] = new TProfile(Form("v2pp_eta_%i", i), ";#eta;v_{2}",
-                              32, -3.2, 3.2, -1.1, 1.1);
+                               NETABINS, etalo, etahi, -1.1, 1.1);
   }
 
 
@@ -142,26 +132,13 @@ void parton_pplane()
   dhis_eta = new TH1F("dhis_eta", "dhis_eta", 100, -10, 10);
 
 
-  nch = new TH1F("nch", ";N_{charge}", 1200, -0.5, 1199.5);
-  nch_CNT = new TH1F("nch_CNT", ";N_{charge}", 1200, -0.5, 1199.5);
-  nch_FVTX = new TH1F("nch_FVTX", ";N_{charge}", 1200, -0.5, 1199.5);
+  nch = new TH1F("nch", ";N_{charge}", NNCHBINS, nchlo, nchhi);
+  nch_CNT = new TH1F("nch_CNT", ";N_{charge}", NNCHBINS, nchlo, nchhi);
+  nch_FVTX = new TH1F("nch_FVTX", ";N_{charge}", NNCHBINS, nchlo, nchhi);
 
-  TFile *f_fvtxs = new TFile("fvtx_acc.root");
-  TFile *f_fvtxn = new TFile("fvtx_acc_n.root");
-
-  eff_fvtx_s = (TH2D*)f_fvtxs->Get("rh1");
-  eff_fvtx_s->SetName("eff_fvtx_s");
-  eff_fvtx_n = (TH2D*)f_fvtxn->Get("rh1");
-  eff_fvtx_n->SetName("eff_fvtx_n");
-
-  eff_fvtx_s->Scale(1. / eff_fvtx_s->GetMaximum());
-  eff_fvtx_n->Scale(1. / eff_fvtx_n->GetMaximum());
-
-  // set new random generator with unique seed
-  rndm = new TRandom3(0);
 
   parse_afterPropagation_file();
-  parse_ampt_file();
+  parse_ampt_file(eidx);
 
   fout->Write();
   fout->Close();
@@ -319,7 +296,7 @@ void  processEvent_melting()
 // parse the AMPT hadron information file
 //   called from from parton_pplane()
 //   calls processEvent_ampt()
-void parse_ampt_file()
+void parse_ampt_file(int energyidx)
 {
   //Read in data file
   ifstream dataFile;
@@ -410,13 +387,24 @@ void parse_ampt_file()
         hadrons_FVTX.push_back(p);
     }
 
-    // determine centrality bin
-    if (ct_bbcs >= 28) processEvent_ampt(event_counter, 0);
-    if (ct_bbcs >= 24 && ct_bbcs < 28) processEvent_ampt(event_counter, 1);
-    if (ct_bbcs >= 19 && ct_bbcs < 24) processEvent_ampt(event_counter, 2);
-    if (ct_bbcs >= 12 && ct_bbcs < 19) processEvent_ampt(event_counter, 3);
-    if (ct_bbcs >=  7 && ct_bbcs < 12) processEvent_ampt(event_counter, 4);
-    if (ct_bbcs < 7) processEvent_ampt(event_counter, 5);
+    // get the centrality bin
+    int index = -1;
+    for (int icent = 0; icent < NCENT; icent++)
+    {
+      if ( ct_bbcs >= centlim[energyidx][icent])
+      {
+        index = icent;
+        break;
+      }
+    }
+    if (index >= 0)
+    {
+      processEvent_ampt(event_counter, index);
+    }
+    else
+    {
+      cout << "WARNING!! Unable to find index for ct_bbcs=" << ct_bbcs << endl;
+    }
 
     // clear vectors
     hadrons.clear();
@@ -504,32 +492,6 @@ void  processEvent_ampt(int evtnumber, int index)
 }
 
 
-
-//------------------------------------------------------------------------------
-// helper functions for FVTX pT dependent efficiency
-bool test_eff_s(float pT, float eta)
-{
-  int pTbin = eff_fvtx_s->GetXaxis()->FindBin(pT);
-
-  float n = eff_fvtx_s->GetBinContent(pTbin);
-
-  float test = rndm->Rndm();
-
-  if (test < n && ifFVTXS(eta)) return true;
-  else return false;
-}
-
-bool test_eff_n(float pT, float eta)
-{
-  int pTbin = eff_fvtx_n->GetXaxis()->FindBin(pT);
-
-  float n = eff_fvtx_n->GetBinContent(pTbin);
-
-  float test = rndm->Rndm();
-
-  if (test < n && ifFVTXN(eta)) return true;
-  else return false;
-}
 
 
 
