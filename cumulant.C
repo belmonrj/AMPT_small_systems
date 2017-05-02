@@ -57,9 +57,6 @@ float ave_2particle_correlation(float Qxn, float Qyn, float M);
 float ave_4particle_correlation(float Qxn, float Qyn, float Qx2n, float Qy2n, float M);
 float ave_6particle_correlation(TComplex qn, TComplex q2n, TComplex q3n, float M);
 
-bool test_eff_s(float pT, float eta);
-bool test_eff_n(float pT, float eta);
-
 void parseampt();
 void processEvent(vector<particle> nucleons);
 
@@ -246,7 +243,7 @@ void parseampt()
       p.pz  = pv[2];
 
       // if ( ifFVTXS(p.eta) || ifFVTXN(p.eta) )
-      if ((ifFVTXS(p.eta) && test_eff_s(p.pT, p.eta)) || (ifFVTXN(p.eta) && test_eff_n(p.pT, p.eta)))
+      if ( test_eff_s(p.pT, p.eta) || test_eff_n(p.pT, p.eta) )
       {
         all_particle.push_back(p);
       }

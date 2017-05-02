@@ -240,7 +240,7 @@ void parseampt(int energyidx)
       }
 
       //FVTXS
-      if ( test_eff_s(p.pT, p.eta) )
+      if ( ifFVTXS(p.eta) )
       {
         pA.push_back(p);
         hcount->Fill(1);
