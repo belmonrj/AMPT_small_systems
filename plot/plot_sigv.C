@@ -43,11 +43,11 @@ gStyle->SetErrorX(0);
   // SET RUNNING CONDITIONS
   //==========================================================================//
 
-  float v2_max = 0.079;
-  // int x_max = 140;   // PbPb: maximum 6000     pPb: 300
-  // int rebin = 4;
-  int x_max = 1000;   // PbPb: maximum 6000     pPb: 300
-  int rebin = 20;
+  float v2_max = 0.089;
+  int x_max = 70;   // PbPb: maximum 6000     pPb: 300
+  int rebin = 2;
+  // int x_max = 1000;   // PbPb: maximum 6000     pPb: 300
+  // int rebin = 20;
 
   double deltav = 0; // nonflow delta^2 value
 
@@ -58,10 +58,40 @@ gStyle->SetErrorX(0);
   // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
   // const char* pname = "ampt_dau200_b02_sigparton150_ptfilter_50M_rebin";
 
-  const char* cFilename = "rootfiles/cumulants_ampt_auau200_b20_sigparton150_ptfilter_1M_set1.root";
-  const char* pFilename = "rootfiles/pplane_ampt_auau200_b20_sigparton150_ptfilter_1M_set1.root";
-  const char* lname = "AMPT -- Au+Au 200 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
-  const char* pname = "ampt_auau200_b20_sigparton150_ptfilter_1M_rebin";
+  // const char* cFilename = "rootfiles/cumulants_ampt_auau200_b20_sigparton150_ptfilter_1M_set1.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_auau200_b20_sigparton150_ptfilter_1M_set1.root";
+  // const char* lname = "AMPT -- Au+Au 200 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_auau200_b20_sigparton150_ptfilter_1M_rebin";
+
+  // const char* cFilename = "rootfiles/cumulants_ampt_ppb5020_b02_sigparton150_ptfilter_50M_set2.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_ppb5020_b02_sigparton150_ptfilter_50M_set2.root";
+  // const char* lname = "AMPT -- p+Pb 5020 -- 50M b<02 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_ppb5020_b02_sigparton150_ptfilter_50M_rebin";
+
+  // const char* cFilename = "rootfiles/cumulants_ampt_pbpb5020_b20_sigparton150_ptfilter_1M_set0.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_pbpb5020_b20_sigparton150_ptfilter_1M_set0.root";
+  // const char* lname = "AMPT -- Pb+Pb 5020 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_pbpb5020_b20_sigparton150_ptfilter_1M_rebin";
+
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau200_11.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau200_11.root";
+  // const char* lname = "AMPT -- d+Au 200 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau200_b20_sigparton075_ptetafilter_50M_rebin";
+
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau62_11.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau62_11.root";
+  // const char* lname = "AMPT -- d+Au 62.4 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau62_b20_sigparton075_ptetafilter_50M_rebin";
+
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau39_10.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau39_10.root";
+  // const char* lname = "AMPT -- d+Au 39 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau39_b20_sigparton075_ptetafilter_50M_rebin";
+
+  const char* cFilename = "rootfiles/cumulants_ampt_dau20_10.root";
+  const char* pFilename = "rootfiles/pplane_ampt_dau20_10.root";
+  const char* lname = "AMPT -- d+Au 19.6 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  const char* pname = "ampt_dau20_b20_sigparton075_ptetafilter_50M_rebin";
 
 
   //==========================================================================//

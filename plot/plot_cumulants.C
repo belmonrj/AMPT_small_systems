@@ -29,9 +29,9 @@ void plot_cumulants()
 
   float v2_max = 0.1;
   // int x_max = 140;   // PbPb: maximum 6000     pPb: 300
-  int x_max = 400;   // PbPb: maximum 6000     pPb: 300
+  int x_max = 140;   // PbPb: maximum 6000     pPb: 300
   // int bin_size = 50; // PbPb: maximum 100      pPb: 50
-  int rebin = 10;
+  int rebin = 4;
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b02_sigparton075_ptfilter_50M_set0.root";
   // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=0.75 mb -- p_{T} filter";
@@ -65,9 +65,13 @@ void plot_cumulants()
   // const char* lname = "AMPT -- d+Au 200 -- 50M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
   // const char* pname = "ampt_dau200_b20_sigparton150_ptfilter_50M_rebin";
 
-  const char* fname = "rootfiles/cumulants_ampt_auau200_0_0.root";
-  const char* lname = "AMPT -- Au+Au 200 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
-  const char* pname = "ampt_auau200_b20_sigparton150_ptfilter_1M_rebin";
+  // const char* fname = "rootfiles/cumulants_ampt_auau200_0_0.root";
+  // const char* lname = "AMPT -- Au+Au 200 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_auau200_b20_sigparton150_ptfilter_1M_rebin";
+
+  const char* fname = "rootfiles/cumulants_ampt_ppb5020_b02_sigparton150_ptfilter_50M_set2.root";
+  const char* lname = "AMPT -- p+Pb 5020 -- 50M b<02 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  const char* pname = "ampt_ppb5020_b02_sigparton150_ptfilter_50M_rebin";
 
   TFile *file = TFile::Open(fname);
 
