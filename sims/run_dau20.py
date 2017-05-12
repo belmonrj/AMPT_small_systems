@@ -22,7 +22,7 @@ nevents = 1000
 
 condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'
-finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dau200"
+finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dau20"
 
 SEED = nproc + 10000 * nexodus
 
@@ -42,8 +42,8 @@ print('\n')
 exodusDir = baseOutDir
 
 #copy the ampt directory
-os.system("cp -r /phenix/hhj3/dcm07e/dAuEnergyScan/ampt_v2.26t5_dau200 {}".format(baseOutDir))
-os.chdir(baseOutDir + "ampt_v2.26t5_dau200/")
+os.system("cp -r /phenix/hhj3/dcm07e/dAuEnergyScan/ampt_v2.26t5_dau20 {}".format(baseOutDir))
+os.chdir(baseOutDir + "ampt_v2.26t5_dau20/")
 os.getcwd()
 
 for file in os.listdir('ana/'):
@@ -55,7 +55,7 @@ os.remove('input.ampt')
 
 target = open('input.ampt', 'w')
 
-target.write("200\n")					# EFRM (sqrt(S_NN) in GeV if FRAME is CMS)
+target.write("19.6\n")					# EFRM (sqrt(S_NN) in GeV if FRAME is CMS)
 target.write("CMS\n")					# FRAME
 target.write("A\n")						# PROJ
 target.write("A\n")						# TARG
@@ -125,8 +125,8 @@ os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/range.h .")
 os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/consts.h .")
 os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_eff_pteta.root .")
 os.system("root -b -q cumulant.C++")
-os.system("root -b -q parton_pplane.C++\(200\)")
-os.system("root -b -q event_plane.C++\(200\)")
+os.system("root -b -q parton_pplane.C++\(20\)")
+os.system("root -b -q event_plane.C++\(20\)")
 
 
 ########################
@@ -134,9 +134,9 @@ os.system("root -b -q event_plane.C++\(200\)")
 ########################
 
 # now move all the desired output files to there final directories
-shutil.copy2("six.root", "{}/cumulants_ampt_dau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
-shutil.copy2("ppplane.root", "{}/pplane_ampt_dau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
-shutil.copy2("out_EP.root", "{}/eplane_ampt_dau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+shutil.copy2("six.root", "{}/cumulants_ampt_dau20_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+shutil.copy2("ppplane.root", "{}/pplane_ampt_dau20_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+shutil.copy2("out_EP.root", "{}/eplane_ampt_dau20_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
 
 
 print("---- DONE EXECUTING JOB {} {} ----".format(nexodus, nproc))

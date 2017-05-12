@@ -17,13 +17,14 @@ nexodus = int(sys.argv[2])
 ##############################################
 # Set some parameters for running
 ##############################################
-nevents = 5000
+# nevents = 5000
+nevents = 1000
 
 condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'
-finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dAu62"
+finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dau62"
 
-SEED = nproc + 100 * nexodus
+SEED = nproc + 10000 * nexodus
 
 
 ################
@@ -122,8 +123,7 @@ os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/parton_pplane.C ."
 os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/event_plane.C .")
 os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/range.h .")
 os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/consts.h .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_acc.root .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_acc_n.root .")
+os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_eff_pteta.root .")
 os.system("root -b -q cumulant.C++")
 os.system("root -b -q parton_pplane.C++\(62\)")
 os.system("root -b -q event_plane.C++\(62\)")

@@ -6,7 +6,7 @@ Universe        = vanilla
 Notification    = Never
 
 # The executable we want to run.
-Executable   =  /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/sims/run_dau200.py
+Executable   =  /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/sims/run_dau20.py
 
 # The argument to pass to the executable.
 Arguments       = $(Process) 19
@@ -32,13 +32,13 @@ Initialdir   = /phenix/hhj3/dcm07e/dAuEnergyScan/sims/
 Input           = /dev/null
 
 # The job's stdout is sent to this file.
-Output       = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_dau200_19.out.$(Process)
+Output       = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_dau20_19.out.$(Process)
 
 # The job's stderr is sent to this file.
-Error        = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_dau200_19.err.$(Process)
+Error        = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_dau20_19.err.$(Process)
 
 # The condor log file for this job, useful when debuggin
-Log          = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_dau200_19.log.$(Process)
+Log          = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_dau20_19.log.$(Process)
 
 # Email address to send notification to.
 #Notify_user     = darren.mcglinchey@colorado.edu
