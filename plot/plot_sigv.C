@@ -46,6 +46,8 @@ gStyle->SetErrorX(0);
   float v2_max = 0.089;
   int x_max = 70;   // PbPb: maximum 6000     pPb: 300
   int rebin = 2;
+  // int x_max = 120;   // PbPb: maximum 6000     pPb: 300
+  // int rebin = 2;
   // int x_max = 1000;   // PbPb: maximum 6000     pPb: 300
   // int rebin = 20;
 
@@ -73,25 +75,25 @@ gStyle->SetErrorX(0);
   // const char* lname = "AMPT -- Pb+Pb 5020 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
   // const char* pname = "ampt_pbpb5020_b20_sigparton150_ptfilter_1M_rebin";
 
-  // const char* cFilename = "rootfiles/cumulants_ampt_dau200_11.root";
-  // const char* pFilename = "rootfiles/pplane_ampt_dau200_11.root";
-  // const char* lname = "AMPT -- d+Au 200 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
-  // const char* pname = "ampt_dau200_b20_sigparton075_ptetafilter_50M_rebin";
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau200_11-24.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau200_20-24.root";
+  // const char* lname = "AMPT -- d+Au 200 -- 450M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau200_b20_sigparton075_ptetafilter_450M_rebin";
 
-  // const char* cFilename = "rootfiles/cumulants_ampt_dau62_11.root";
-  // const char* pFilename = "rootfiles/pplane_ampt_dau62_11.root";
-  // const char* lname = "AMPT -- d+Au 62.4 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
-  // const char* pname = "ampt_dau62_b20_sigparton075_ptetafilter_50M_rebin";
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau62_11-14.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau62_11-14.root";
+  // const char* lname = "AMPT -- d+Au 62.4 -- 200M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau62_b20_sigparton075_ptetafilter_200M_rebin";
 
-  // const char* cFilename = "rootfiles/cumulants_ampt_dau39_10.root";
-  // const char* pFilename = "rootfiles/pplane_ampt_dau39_10.root";
-  // const char* lname = "AMPT -- d+Au 39 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
-  // const char* pname = "ampt_dau39_b20_sigparton075_ptetafilter_50M_rebin";
+  const char* cFilename = "rootfiles/cumulants_ampt_dau39_10-23.root";
+  const char* pFilename = "rootfiles/pplane_ampt_dau39_10-12.root";
+  const char* lname = "AMPT -- d+Au 39 -- 350M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  const char* pname = "ampt_dau39_b20_sigparton075_ptetafilter_350M_rebin";
 
-  const char* cFilename = "rootfiles/cumulants_ampt_dau20_10.root";
-  const char* pFilename = "rootfiles/pplane_ampt_dau20_10.root";
-  const char* lname = "AMPT -- d+Au 19.6 -- 50M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
-  const char* pname = "ampt_dau20_b20_sigparton075_ptetafilter_50M_rebin";
+  // const char* cFilename = "rootfiles/cumulants_ampt_dau20_10-14.root";
+  // const char* pFilename = "rootfiles/pplane_ampt_dau20_10-14.root";
+  // const char* lname = "AMPT -- d+Au 19.6 -- 250M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau20_b20_sigparton075_ptetafilter_250M_rebin";
 
 
   //==========================================================================//
@@ -386,6 +388,7 @@ gStyle->SetErrorX(0);
   th1d_v2_mid->SetMarkerSize(1.5);
   th1d_v2_mid->SetMarkerColorAlpha(kMagenta+2, 0.8);
   th1d_v2_mid->SetLineColor(kMagenta+2);
+  // th1d_v2_mid->GetXaxis()->SetRange(th1d_v2_mid->FindBin(50), th1d_v2_mid->GetNbinsX());
 
   th1d_v26->SetMarkerStyle(kFullStar);
   th1d_v26->SetMarkerSize(1.5);
@@ -395,6 +398,7 @@ gStyle->SetErrorX(0);
   th1d_v24->SetMarkerStyle(kFullSquare);
   th1d_v24->SetMarkerColorAlpha(kBlue, 0.8);
   th1d_v24->SetLineColor(kBlue);
+  // th1d_v24->GetXaxis()->SetRange(th1d_v24->FindBin(50), th1d_v24->GetNbinsX());
 
   th1d_v22gap->SetMarkerStyle(24);
   th1d_v22gap->SetMarkerColorAlpha(kRed, 0.8);
@@ -403,10 +407,12 @@ gStyle->SetErrorX(0);
   th1d_v22->SetMarkerStyle(20);
   th1d_v22->SetMarkerColorAlpha(kRed, 0.8);
   th1d_v22->SetLineColor(kRed);
+  // th1d_v22->GetXaxis()->SetRange(th1d_v22->FindBin(20), th1d_v22->GetNbinsX());
 
   th1d_sigvv->SetMarkerStyle(kFullSquare);
   th1d_sigvv->SetMarkerColorAlpha(kBlue, 0.8);
   th1d_sigvv->SetLineColor(kBlue);
+  // th1d_sigvv->GetXaxis()->SetRange(th1d_sigvv->FindBin(50), th1d_sigvv->GetNbinsX());
 
   th1d_sigee->SetMarkerStyle(kFullCircle);
   th1d_sigee->SetMarkerColorAlpha(kBlack, 0.8);
@@ -428,7 +434,7 @@ gStyle->SetErrorX(0);
   leg1->AddEntry(th1d_v2pp, "v_{2}{PP}", "p");
   leg1->AddEntry(th1d_v24, "v_{2}{4} = #sqrt{v_{2}^{2} - #sigma_{v_{2}}^{2}}", "p");
   leg1->AddEntry(th1d_v2_mid, Form("v_{2} (#delta / v_{2} = %.2f)", deltav), "p");
-  leg1->AddEntry(th1d_v26, "v_{2}{6}", "p");
+  // leg1->AddEntry(th1d_v26, "v_{2}{6}", "p");
   // leg1->AddEntry(th1d_v22gap, "v_{2}{2, |#Delta#eta|>2}", "p");
 
   TLegend *leg2 = new TLegend(0.2, 0.85, 0.8, 0.98);
@@ -446,7 +452,7 @@ gStyle->SetErrorX(0);
 
   th1d_v2pp->Draw("p,same");
   // th1d_v22gap->Draw("p,same");
-  th1d_v26->Draw("p,same");
+  // th1d_v26->Draw("p,same");
   th1d_v24->Draw("p,same");
   th1d_v22->Draw("p,same");
   th1d_v2_mid->Draw("p,same");
