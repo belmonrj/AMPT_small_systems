@@ -20,6 +20,7 @@
 #include "TH2.h"
 #include "TProfile.h"
 #include "TF1.h"
+#include "TLatex.h"
 
 using namespace std;
 
@@ -27,11 +28,11 @@ void plot_cumulants()
 {
   gStyle->SetOptStat(0);
 
-  float v2_max = 0.1;
+  float v2_max = 0.13;
   // int x_max = 140;   // PbPb: maximum 6000     pPb: 300
-  int x_max = 140;   // PbPb: maximum 6000     pPb: 300
+  int x_max = 50;   // PbPb: maximum 6000     pPb: 300
   // int bin_size = 50; // PbPb: maximum 100      pPb: 50
-  int rebin = 4;
+  int rebin = 2;
 
   // const char* fname = "rootfiles/cumulants_ampt_dau200_b02_sigparton075_ptfilter_50M_set0.root";
   // const char* lname = "AMPT -- d+Au 200 -- 50M b<2 fm -- #sigma_{parton}=0.75 mb -- p_{T} filter";
@@ -69,9 +70,29 @@ void plot_cumulants()
   // const char* lname = "AMPT -- Au+Au 200 -- 1M b<20 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
   // const char* pname = "ampt_auau200_b20_sigparton150_ptfilter_1M_rebin";
 
-  const char* fname = "rootfiles/cumulants_ampt_ppb5020_b02_sigparton150_ptfilter_50M_set2.root";
-  const char* lname = "AMPT -- p+Pb 5020 -- 50M b<02 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
-  const char* pname = "ampt_ppb5020_b02_sigparton150_ptfilter_50M_rebin";
+  // const char* fname = "rootfiles/cumulants_ampt_ppb5020_b02_sigparton150_ptfilter_50M_set2.root";
+  // const char* lname = "AMPT -- p+Pb 5020 -- 50M b<02 fm -- #sigma_{parton}=1.50 mb -- p_{T} filter";
+  // const char* pname = "ampt_ppb5020_b02_sigparton150_ptfilter_50M_rebin";
+
+  // const char* fname = "rootfiles/cumulants_ampt_dau200_11-24.root";
+  // const char* lname = "AMPT -- d+Au 200 -- 500M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau200_b20_sigparton075_ptetafilter_500M_rebin";
+
+  // const char* fname = "rootfiles/cumulants_ampt_dau62_11-24.root";
+  // const char* lname = "AMPT -- d+Au 62.4 -- 500M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau62_b20_sigparton075_ptetafilter_500M_rebin";
+
+  // const char* fname = "rootfiles/cumulants_ampt_dau39_10-24.root";
+  // const char* lname = "AMPT -- d+Au 39 -- 400M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau39_b20_sigparton075_ptetafilter_400M_rebin";
+
+  // const char* fname = "rootfiles/cumulants_ampt_dau20_10-23.root";
+  // const char* lname = "AMPT -- d+Au 19.6 -- 450M b<20 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  // const char* pname = "ampt_dau20_b20_sigparton075_ptetafilter_450M_rebin";
+
+  const char* fname = "rootfiles/cumulants_ampt_pau200_0-14.root";
+  const char* lname = "AMPT -- p+Au 200 -- 50M b<20 fm + 250M b<2 fm -- #sigma_{parton}=0.75 mb -- p_{T} eta filter";
+  const char* pname = "ampt_pau200_b20pb02_sigparton075_ptetafilter_300M_rebin";
 
   TFile *file = TFile::Open(fname);
 
@@ -283,7 +304,7 @@ void plot_cumulants()
   //----------------------------------------------------------------------------
   // plot v2's
   TCanvas *cv2 = new TCanvas("cv2", "cv2", 800, 600);
-  cv2->SetMargin(0.12, 0.02, 0.12, 0.02);
+  cv2->SetMargin(0.10, 0.02, 0.10, 0.06);
   cv2->SetTicks(1, 1);
 
   cv2->cd();
@@ -315,13 +336,14 @@ void plot_cumulants()
   th1d_v2_mid->SetMarkerColor(1);
   th1d_v2_mid->SetMarkerSize(1.5);
 
-  th1d_v24->SetMarkerStyle(25);
+  th1d_v24->SetMarkerStyle(kFullSquare);
   th1d_v24->SetMarkerColor(kBlue);
   th1d_v24->SetLineColor(kBlue);
 
-  th1d_v22gap->SetMarkerStyle(24);
-  th1d_v22gap->SetMarkerColor(kRed);
-  th1d_v22gap->SetLineColor(kRed);
+  th1d_v22gap->SetMarkerStyle(kFullDiamond);
+  th1d_v22gap->SetMarkerSize(1.5);
+  th1d_v22gap->SetMarkerColor(kMagenta+2);
+  th1d_v22gap->SetLineColor(kMagenta+2);
 
   th1d_v22->SetMarkerStyle(20);
   th1d_v22->SetMarkerColor(kRed);
@@ -331,17 +353,24 @@ void plot_cumulants()
   th1d_v24->Draw("p,same");
   th1d_v22->Draw("p,same");
 
-  TLegend *leg1 = new TLegend(0.2, 0.7, 0.8, 0.96);
+  // TLegend *leg1 = new TLegend(0.2, 0.7, 0.8, 0.96);
+  TLegend *leg1 = new TLegend(0.2, 0.12, 0.8, 0.16);
   leg1->SetFillStyle(0);
   leg1->SetBorderSize(0);
   leg1->SetTextFont(62);
   leg1->SetTextSize(0.04);
-  leg1->SetHeader(lname);
+  // leg1->SetHeader(lname);
+  leg1->SetNColumns(3);
   leg1->AddEntry(th1d_v24, "v_{2}{4}", "p");
   leg1->AddEntry(th1d_v22, "v_{2}{2}", "p");
   leg1->AddEntry(th1d_v22gap, "v_{2}{2, |#Delta#eta|>2}", "p");
   leg1->Draw("same");
 
+  TLatex lt;
+  lt.SetNDC();
+  lt.SetTextAlign(22);
+  lt.SetTextSize(0.035);
+  lt.DrawLatex(0.5, 0.96, lname);
 
   cv2->Print(Form("pdfs/cumulants_%s.pdf", pname));
 

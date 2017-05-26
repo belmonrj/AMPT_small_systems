@@ -1,3 +1,10 @@
 # ignore root build files
 *.d
 *.so
+*.pcm
+
+# ignore rootfiles in plotting directory
+plot/rootfiles/*
+
+# ignore plotted pdfs
+plot/pdfs/*
