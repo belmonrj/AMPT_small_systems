@@ -71,5 +71,5 @@ Simulation log
 ** dAu BES (200, 62.4, 39, 19.6) **
 - set 19: 11 May 2017 - b<20 fm, sig_parton=0.75 mb, FVTX pT eta filter, 1k events/job, 1k jobs (1M total)
     + Test run after modifying centrality bin limits
-
+- set 20: 11 May 2017, b<20 fm, sig_parton=0.75 mb, FVTX pT eta filter, 5k events/job, 10k jobs (50M total)
 

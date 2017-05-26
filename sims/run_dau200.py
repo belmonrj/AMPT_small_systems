@@ -17,8 +17,7 @@ nexodus = int(sys.argv[2])
 ##############################################
 # Set some parameters for running
 ##############################################
-# nevents = 5000
-nevents = 1000
+nevents = 5000
 
 condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'

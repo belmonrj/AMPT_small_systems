@@ -6,15 +6,13 @@ Universe        = vanilla
 Notification    = Never
 
 # The executable we want to run.
-Executable   =  /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/sims/run_pau200.sh
+Executable   =  /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/sims/run_pau200.py
 
- # The argument to pass to the executable.
-Arguments       = $(Process) 0
+# The argument to pass to the executable.
+Arguments       = $(Process) 14
 
-# The requirement line specifies which machines we want to
-# run this job on.  Any arbitrary classad expression can
-# be used.
-#Requirements = (CPU_Experiment == "phenix") 
+# Get current environment
+GetEnv          = True
 
 # Rank is an expression that states how to rank machines which 
 # have already met the requirements expression.  Essentially, 
@@ -34,13 +32,13 @@ Initialdir   = /phenix/hhj3/dcm07e/dAuEnergyScan/sims/
 Input           = /dev/null
 
 # The job's stdout is sent to this file.
-Output       = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_pau200_0.out.$(Process)
+Output       = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_cumulants_pau200_14.out.$(Process)
 
 # The job's stderr is sent to this file.
-Error        = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_pau200_0.err.$(Process)
+Error        = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_cumulants_pau200_14.err.$(Process)
 
 # The condor log file for this job, useful when debuggin
-Log          = /phenix/plhf/dcm07e/dAuEnergyScan/sims/dAu200/condor_logs/ran_ampt_cumulants_pau200_0.log.$(Process)
+Log          = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/condor_logs/ran_ampt_cumulants_pau200_14.log.$(Process)
 
 # Email address to send notification to.
 #Notify_user     = darren.mcglinchey@colorado.edu
