@@ -19,7 +19,7 @@ Simulation log
     + Fixed parton_pplane.C to normalize FVTX pT dep efficiency
 - set 8: 200 GeV, b<2 fm, sig_parton=1.50 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
 
-- set 10: 200 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
+- set 10: 200 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total), 2 May 2017
     + After modifying cumulants.C, parton_pplane.C, event_plane.C
 
 
@@ -43,7 +43,33 @@ Simulation log
 
 - set 0: 5020 GeV, b<20 fm, sig_parton=1.50 mb, FVTX pT filter, 500 events/job, 2k jobs (1M total)
 
-** dAu 62.4 GeV **
-- set 10: 200 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
+
+
+
+
+** dAu 200 GeV **
+- set 10: 200 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total), 2 May 2017
     + After modifying cumulants.C, parton_pplane.C, event_plane.C
+- set 11: 200 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total), 3 May 2017
+    + After modifying fvtx efficiencies
+    
+** dAu 62.4 GeV **
+- set 10: 62.4 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total)
+    + After modifying cumulants.C, parton_pplane.C, event_plane.C
+- set 11: 62.4 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total), 3 May 2017
+    + After modifying fvtx efficiencies
+
+** dAu 39 GeV **
+- set 10: 39 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total), 4 May 2017
+    + After modifying fvtx efficiencies
+
+** dAu 19.6 GeV **
+- set 10: 19.6 GeV, b<20 fm, sig_parton=0.75 mb, FVTX pT filter, 5k events/job, 10k jobs (50M total), 4 May 2017
+    + After modifying fvtx efficiencies
+
+
+** dAu BES (200, 62.4, 39, 19.6) **
+- set 19: 11 May 2017 - b<20 fm, sig_parton=0.75 mb, FVTX pT eta filter, 1k events/job, 1k jobs (1M total)
+    + Test run after modifying centrality bin limits
+- set 20: 11 May 2017, b<20 fm, sig_parton=0.75 mb, FVTX pT eta filter, 5k events/job, 10k jobs (50M total)
 

@@ -21,7 +21,7 @@ nevents = 5000
 
 condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'
-finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dau200"
+finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/pau200"
 
 SEED = nproc + 10000 * nexodus
 
@@ -56,15 +56,15 @@ target = open('input.ampt', 'w')
 
 target.write("200\n")					# EFRM (sqrt(S_NN) in GeV if FRAME is CMS)
 target.write("CMS\n")					# FRAME
-target.write("A\n")						# PROJ
+target.write("P\n")						# PROJ
 target.write("A\n")						# TARG
-target.write("2\n")						# IAP (projectile A number) 
+target.write("1\n")						# IAP (projectile A number) 
 target.write("1\n")						# IZP (projectile Z number) 
 target.write("197\n")					# IAT (target A number)     Au: 197 Pb: 208
 target.write("79\n")					# IZT (target Z number)     Au: 79  Pb: 82
 target.write("{}\n".format(nevents))	# NEVNT (total number of events)
 target.write("0.0\n")					# BMIN (mininum impact parameter in fm) 
-target.write("20.0\n")					# BMAX (maximum impact parameter in fm, also see below)
+target.write("2.0\n")					# BMAX (maximum impact parameter in fm, also see below)
 target.write("4\n")						# ISOFT (D=1): select Default AMPT or String Melting(see below)
 target.write("150\n")					# NTMAX: number of timesteps (D=150), (D=3 off cascade)        -------
 target.write("0.2\n")					# DT: timestep in fm (hadron cascade time= DT*NTMAX) (D=0.2)
@@ -133,9 +133,9 @@ os.system("root -b -q event_plane.C++\(200\)")
 ########################
 
 # now move all the desired output files to there final directories
-shutil.copy2("six.root", "{}/cumulants_ampt_dau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
-shutil.copy2("ppplane.root", "{}/pplane_ampt_dau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
-shutil.copy2("out_EP.root", "{}/eplane_ampt_dau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+shutil.copy2("six.root", "{}/cumulants_ampt_pau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+shutil.copy2("ppplane.root", "{}/pplane_ampt_pau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+shutil.copy2("out_EP.root", "{}/eplane_ampt_pau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
 
 
 print("---- DONE EXECUTING JOB {} {} ----".format(nexodus, nproc))
