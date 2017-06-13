@@ -35,14 +35,16 @@ void plot_v2pteta()
   int energy[] = {200, 62, 39, 20};
   const char* epFile[] =
   {
-    "rootfiles/eplane_ampt_dau200_20-24.root",
+    // "rootfiles/eplane_ampt_dau200_nint_0.root",
+    "rootfiles/eplane_ampt_dau200_20-29.root",
     "rootfiles/eplane_ampt_dau62_20-24.root",
     "rootfiles/eplane_ampt_dau39_20-24.root",
     "rootfiles/eplane_ampt_dau20_20-23.root",
   };
   const char* ppFile[] =
   {
-    "rootfiles/pplane_ampt_dau200_20-24.root",
+    // "rootfiles/pplane_ampt_dau200_nint_0.root",
+    "rootfiles/pplane_ampt_dau200_20-29.root",
     "rootfiles/pplane_ampt_dau62_20-24.root",
     "rootfiles/pplane_ampt_dau39_20-24.root",
     "rootfiles/pplane_ampt_dau20_20-23.root",
@@ -51,7 +53,7 @@ void plot_v2pteta()
   const int NCENTMAX = 6;
   int NCENT[] = {6, 6, 5, 4};
 
-  bool saveFile = true;
+  bool saveFile = false;
   const char* outFile = "AMPT_sigparton075_test.root";
 
   //==========================================================================//
