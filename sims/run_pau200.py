@@ -21,7 +21,7 @@ nevents = 5000
 
 condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'
-finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/pau200"
+finalOutDir = "/phenix/plhf/belmonrj/AMPT_small_systems/output/pau200"
 
 SEED = nproc + 10000 * nexodus
 
@@ -139,35 +139,6 @@ shutil.copy2("out_EP.root", "{}/eplane_ampt_pau200_{}_{:04d}.root".format(finalO
 
 
 print("---- DONE EXECUTING JOB {} {} ----".format(nexodus, nproc))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

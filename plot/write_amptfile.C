@@ -66,7 +66,8 @@ void write_amptfile()
     "rootfiles/pplane_ampt_dau200_nint_1-4.root",//dummy!
     "rootfiles/pplane_ampt_dau200_nint_1-4.root",//dummy!
   };
-  const char* pauCumFile = "rootfiles/cumulants_ampt_pau200_0-14.root";
+  //const char* pauCumFile = "rootfiles/cumulants_ampt_pau200_0-14.root";
+  const char* pauCumFile = "rootfiles/cumulants_ampt_pau200_all.root";
 
   int rebin = 2;
 

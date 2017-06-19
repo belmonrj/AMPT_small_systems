@@ -25,11 +25,11 @@ parser.add_argument("-v", "--verbose",
                   help="print status messages to stdout")
 
 parser.set_defaults(filename="condor.job",
-                    tag='dau200',
+                    tag='pau200',
                     set='0',
                     nfiles='10000',
-                    indir="/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants",
-                    outdir="/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/agg/")
+                    indir="/phenix/plhf/belmonrj/AMPT_small_systems/output/",
+                    outdir="/phenix/plhf/belmonrj/AMPT_small_systems/output/agg/")
 
 args = parser.parse_args()
 
@@ -49,7 +49,7 @@ fo = open(args.filename,'w')
 
 #write the job information
 fo.write("Universe        = vanilla\n")
-fo.write("Executable      = /phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/agg/hadd_sets.py\n")
+fo.write("Executable      = /phenix/plhf/belmonrj/AMPT_small_systems/sims/hadd_sets.py\n")
 fo.write("Requirements    = (CPU_Speed >= 1 && CPU_Experiment == \"phenix\")\n")
 fo.write("Rank            = CPU_Speed\n")
 fo.write("Priority        = +1\n")
