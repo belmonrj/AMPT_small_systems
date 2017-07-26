@@ -2,8 +2,8 @@
 
 @ nproc = $1
 @ nexodus = $2
-@ nevents = 500
-# @ nevents = 10
+# @ nevents = 500
+@ nevents = 10
 
 #set the seed
 @ SEED = $nproc + 100 * $nexodus
