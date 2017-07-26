@@ -118,34 +118,3 @@ mv ppplane.root $finalOutDir"/pplane_ampt_auau200_"$nexodus"_"$nproc".root"
 
 echo "---- DONE EXECUTING JOB "$nexodus" "$nproc" ----"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
