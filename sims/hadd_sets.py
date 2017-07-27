@@ -14,12 +14,12 @@ condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'
 
 if len(sys.argv) != 7:
-    sysname = 'pau200'
-    setnum = 10
+    sysname = 'auau200'
+    setnum = 1
     fname = 'cumulants'
     njobs = 10000
     indir = '..'
-    outdir = '/phenix/plhf/belmonrj/AMPT_small_systems/output/cumulants/agg/'
+    outdir = '/phenix/plhf/belmonrj/AMPT_small_systems/output/agg/'
 else:
     sysname = sys.argv[1]
     setnum = int(sys.argv[2])

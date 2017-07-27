@@ -25,8 +25,8 @@ parser.add_argument("-v", "--verbose",
                   help="print status messages to stdout")
 
 parser.set_defaults(filename="condor.job",
-                    tag='pau200',
-                    set='0',
+                    tag='auau200',
+                    set='1',
                     nfiles='10000',
                     indir="/phenix/plhf/belmonrj/AMPT_small_systems/output/",
                     outdir="/phenix/plhf/belmonrj/AMPT_small_systems/output/agg/")
