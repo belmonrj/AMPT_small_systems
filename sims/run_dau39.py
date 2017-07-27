@@ -21,7 +21,7 @@ nevents = 5000
 
 condorDir = os.environ["_CONDOR_SCRATCH_DIR"]
 baseOutDir = condorDir + '/'
-finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/dau39"
+finalOutDir = "/phenix/plhf/belmonrj/AMPT_small_systems/output/dau39"
 
 SEED = nproc + 10000 * nexodus
 
@@ -117,12 +117,12 @@ os.system('./exec {}'.format(SEED))
 ################
 print("----RUNNING ANALYSIS----")
 
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/cumulant.C .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/parton_pplane.C .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/event_plane.C .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/range.h .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/consts.h .")
-os.system("ln -sf /phenix/hhj3/dcm07e/dAuEnergyScan/cumulants/fvtx_eff_pteta.root .")
+os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/cumulant.C .")
+os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/parton_pplane.C .")
+os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/event_plane.C .")
+os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/range.h .")
+os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/consts.h .")
+os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/fvtx_eff_pteta.root .")
 os.system("root -b -q cumulant.C++")
 os.system("root -b -q parton_pplane.C++\(39\)")
 os.system("root -b -q event_plane.C++\(39\)")

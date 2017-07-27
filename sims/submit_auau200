@@ -26,7 +26,7 @@ Priority        = +20
 
 # Used to give jobs a directory with respect to file input
 # and output.
-Initialdir   = /phenix/hhj3/dcm07e/dAuEnergyScan/sims/
+Initialdir   = /phenix/plhf/belmonrj/AMPT_small_systems/sims/
 
 # Input file given to the job.
 Input           = /dev/null
