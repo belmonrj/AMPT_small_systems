@@ -6,7 +6,7 @@ Universe        = vanilla
 Notification    = Never
 
 # The executable we want to run.
-Executable   =  /phenix/plhf/belmonrj/AMPT_small_systems/sims/run_auau200.sh
+Executable   =  /phenix/plhf/belmonrj/AMPT_small_systems/sims/run_auau200.py
 
 # The argument to pass to the executable.
 Arguments       = $(Process) 1
@@ -14,17 +14,17 @@ Arguments       = $(Process) 1
 # Get current environment
 GetEnv          = True
 
-# Rank is an expression that states how to rank machines which 
-# have already met the requirements expression.  Essentially, 
-# rank expresses preference.  A higher numeric value equals better 
+# Rank is an expression that states how to rank machines which
+# have already met the requirements expression.  Essentially,
+# rank expresses preference.  A higher numeric value equals better
 # rank.  Condor will give the job the machine with the highest rank.
 Rank		= CPU_Speed
 
-# Jobs with higher numerical priority will run before jobs 
+# Jobs with higher numerical priority will run before jobs
 # with lower numerical priority (-20 to 20).
 Priority        = +20
 
-# Used to give jobs a directory with respect to file input 
+# Used to give jobs a directory with respect to file input
 # and output.
 Initialdir   = /phenix/hhj3/dcm07e/dAuEnergyScan/sims/
 

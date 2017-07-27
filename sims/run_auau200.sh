@@ -110,7 +110,7 @@ root -b -q parton_pplane.C++
 ########################
 
 # now move all the desired output files to there final directories
-set finalOutDir = "/phenix/plhf/dcm07e/dAuEnergyScan/sims/cumulants/AuAu200"
+set finalOutDir = "/phenix/plhf/belmonrj/AMPT_small_systems/sims/auau200"
 
 mv six.root $finalOutDir"/cumulants_ampt_auau200_"$nexodus"_"$nproc".root"
 mv ppplane.root $finalOutDir"/pplane_ampt_auau200_"$nexodus"_"$nproc".root"
