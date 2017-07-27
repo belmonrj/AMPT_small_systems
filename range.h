@@ -79,7 +79,7 @@ bool test_eff_s(float pT, float eta)
   //   f_fvtxs->Close();
   //   delete f_fvtxs;
 
-  //   // intialize random 
+  //   // intialize random
   //   rndm_s = new TRandom3(0);
   // }
 
@@ -110,7 +110,7 @@ bool test_eff_s(float pT, float eta)
     f_fvtxs->Close();
     delete f_fvtxs;
 
-    // intialize random 
+    // intialize random
     rndm_s = new TRandom3(0);
   }
 
@@ -153,7 +153,7 @@ bool test_eff_n(float pT, float eta)
   //   f_fvtxn->Close();
   //   delete f_fvtxn;
 
-  //   // intialize random 
+  //   // intialize random
   //   rndm_n = new TRandom3(0);
   // }
 
@@ -184,7 +184,7 @@ bool test_eff_n(float pT, float eta)
     f_fvtxs->Close();
     delete f_fvtxs;
 
-    // intialize random 
+    // intialize random
     rndm_s = new TRandom3(0);
   }
 
@@ -209,3 +209,4 @@ bool test_eff_n(float pT, float eta)
 
 
 #endif
+

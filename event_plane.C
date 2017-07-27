@@ -366,30 +366,3 @@ void  processEvent(int index)
   res_comp[index]->Fill(3.0, TMath::Cos(2 * (psiB - psiC)));
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

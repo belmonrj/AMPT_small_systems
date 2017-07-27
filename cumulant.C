@@ -543,30 +543,3 @@ float ave_6particle_correlation(TComplex qn, TComplex q2n, TComplex q3n, float M
   return (float)six;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
