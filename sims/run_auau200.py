@@ -65,7 +65,7 @@ target.write("197\n")					# IAT (target A number)     Au: 197 Pb: 208
 target.write("79\n")					# IZT (target Z number)     Au: 79  Pb: 82
 target.write("{}\n".format(nevents))	                # NEVNT (total number of events)
 target.write("0.0\n")					# BMIN (mininum impact parameter in fm)
-target.write("2.0\n")					# BMAX (maximum impact parameter in fm, also see below)
+target.write("20.0\n")					# BMAX (maximum impact parameter in fm, also see below)
 target.write("4\n")					# ISOFT (D=1): select Default AMPT or String Melting(see below)
 target.write("150\n")					# NTMAX: number of timesteps (D=150), (D=3 off cascade)        -------
 target.write("0.2\n")					# DT: timestep in fm (hadron cascade time= DT*NTMAX) (D=0.2)
