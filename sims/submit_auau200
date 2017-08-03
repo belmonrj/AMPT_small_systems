@@ -9,7 +9,7 @@ Notification    = Never
 Executable   =  /phenix/plhf/belmonrj/AMPT_small_systems/sims/run_auau200.py
 
 # The argument to pass to the executable.
-Arguments       = $(Process) 3
+Arguments       = $(Process) 4
 
 # Get current environment
 GetEnv          = True
@@ -32,13 +32,13 @@ Initialdir   = /phenix/plhf/belmonrj/AMPT_small_systems/sims/
 Input           = /dev/null
 
 # The job's stdout is sent to this file.
-Output       = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_3.out.$(Process)
+Output       = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_4.out.$(Process)
 
 # The job's stderr is sent to this file.
-Error        = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_3.err.$(Process)
+Error        = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_4.err.$(Process)
 
 # The condor log file for this job, useful when debuggin
-Log          = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_3.log.$(Process)
+Log          = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_4.log.$(Process)
 
 # Email address to send notification to.
 #Notify_user     = darren.mcglinchey@colorado.edu
