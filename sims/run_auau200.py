@@ -125,8 +125,8 @@ os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/range.h .")
 os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/consts.h .")
 os.system("ln -sf /phenix/plhf/belmonrj/AMPT_small_systems/fvtx_eff_pteta.root .")
 os.system("root -b -q cumulant.C++")
-os.system("root -b -q parton_pplane.C++\(200\)")
-os.system("root -b -q event_plane.C++\(200\)")
+#os.system("root -b -q parton_pplane.C++\(200\)")
+#os.system("root -b -q event_plane.C++\(200\)")
 
 
 ########################
@@ -135,8 +135,8 @@ os.system("root -b -q event_plane.C++\(200\)")
 
 # now move all the desired output files to there final directories
 shutil.copy2("six.root", "{}/cumulants_ampt_auau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
-shutil.copy2("ppplane.root", "{}/pplane_ampt_auau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
-shutil.copy2("out_EP.root", "{}/eplane_ampt_auau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+#shutil.copy2("ppplane.root", "{}/pplane_ampt_auau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
+#shutil.copy2("out_EP.root", "{}/eplane_ampt_auau200_{}_{:04d}.root".format(finalOutDir, nexodus, nproc))
 
 
 print("---- DONE EXECUTING JOB {} {} ----".format(nexodus, nproc))
