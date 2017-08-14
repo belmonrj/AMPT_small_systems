@@ -9,7 +9,7 @@ Notification    = Never
 Executable   =  /phenix/plhf/belmonrj/AMPT_small_systems/sims/run_auau200.py
 
 # The argument to pass to the executable.
-Arguments       = $(Process) 10
+Arguments       = $(Process) 15
 
 # Get current environment
 GetEnv          = True
@@ -32,13 +32,13 @@ Initialdir   = /phenix/plhf/belmonrj/AMPT_small_systems/sims/
 Input           = /dev/null
 
 # The job's stdout is sent to this file.
-Output       = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_10.out.$(Process)
+Output       = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_15.out.$(Process)
 
 # The job's stderr is sent to this file.
-Error        = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_10.err.$(Process)
+Error        = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_15.err.$(Process)
 
 # The condor log file for this job, useful when debuggin
-Log          = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_10.log.$(Process)
+Log          = /phenix/plhf/belmonrj/AMPT_small_systems/condor_logs/ran_ampt_cumulants_auau200_15.log.$(Process)
 
 # Email address to send notification to.
 #Notify_user     = darren.mcglinchey@colorado.edu
@@ -61,4 +61,4 @@ Requirements = (CPU_Experiment == "phenix")
 # job.  If a number is placed after the command (i.e. Queue 15)
 # then the job will be submitted N times.  Use the $(Process)
 # macro to make your input/output and log files unique.
-Queue 2000
+Queue 10000
