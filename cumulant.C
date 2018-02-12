@@ -79,6 +79,8 @@ vector<float> temp_raa2;
 vector<float> temp_raa4;
 vector<float> temp_raa6;
 
+vector<float> temp_raa32;
+vector<float> temp_raa34;
 //-----------------------------------------------------------------------------------
 //Graphs declarations
 TProfile* comp;
@@ -95,6 +97,9 @@ TProfile* raa2_Ncharge;
 TProfile* raa4_Ncharge;
 TProfile* raa6_Ncharge;
 
+TProfile* raa32_Ncharge;
+TProfile* raa34_Ncharge;
+
 TH2D* th2d_raa2_Ncharge;
 TH2D* th2d_raa4_Ncharge;
 TH2D* th2d_raa6_Ncharge;
@@ -108,6 +113,7 @@ TH1F* bhis;
 TTree* shorttree;
 
 //-- ntp_event variables
+float Npart;
 int event;
 float bbc_z;
 float centrality;
@@ -162,6 +168,9 @@ void cumulant()
   raa4_Ncharge = new TProfile("raa4_Ncharge", "raa4_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
   raa6_Ncharge = new TProfile("raa6_Ncharge", "raa6_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
 
+  raa32_Ncharge = new TProfile("raa32_Ncharge", "raa32_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+  raa34_Ncharge = new TProfile("raa34_Ncharge", "raa34_Ncharge", NNCHBINS, nchlo, nchhi, -10, 10); //
+
   th2d_raa2_Ncharge = new TH2D("th2d_raa2_Ncharge", "th2d_raa2_Ncharge", NNCHBINS, nchlo, nchhi, 1000, -0.1, 0.1); //
   th2d_raa4_Ncharge = new TH2D("th2d_raa4_Ncharge", "th2d_raa4_Ncharge", NNCHBINS, nchlo, nchhi, 1000, -0.01, 0.01); //
   th2d_raa6_Ncharge = new TH2D("th2d_raa6_Ncharge", "th2d_raa6_Ncharge", NNCHBINS, nchlo, nchhi, 1000, -0.01, 0.01); //
@@ -174,13 +183,14 @@ void cumulant()
   shorttree = new TTree("shorttree", "Event-wise TTree");
   shorttree->SetAutoFlush(1000);
   shorttree->SetMaxTreeSize(100000000000LL);
-  shorttree -> Branch("bbc_z", &bbc_z, "bbc_z/F");
-  shorttree -> Branch("centrality", &centrality, "centrality/F");
-  shorttree -> Branch("nfvtxt", &nfvtxt, "nfvtxt/I");
-  shorttree -> Branch("nfvtxt_south", &nfvtxt_south, "nfvtxt_south/I");
-  shorttree -> Branch("nfvtxt_north", &nfvtxt_north, "nfvtxt_north/I");
-  shorttree -> Branch("nfvtxt_raw", &nfvtxt_raw, "nfvtxt_raw/I");
-  shorttree -> Branch("trigger_scaled", &trigger_scaled, "trigger_scaled/i");
+  shorttree -> Branch("Npart", &Npart, "Npart/F");
+  //shorttree -> Branch("bbc_z", &bbc_z, "bbc_z/F");
+  //shorttree -> Branch("centrality", &centrality, "centrality/F");
+  //shorttree -> Branch("nfvtxt", &nfvtxt, "nfvtxt/I");
+  //shorttree -> Branch("nfvtxt_south", &nfvtxt_south, "nfvtxt_south/I");
+  //shorttree -> Branch("nfvtxt_north", &nfvtxt_north, "nfvtxt_north/I");
+  //shorttree -> Branch("nfvtxt_raw", &nfvtxt_raw, "nfvtxt_raw/I");
+  //shorttree -> Branch("trigger_scaled", &trigger_scaled, "trigger_scaled/i");
   shorttree -> Branch("d_SouthQX", &d_SouthQX, "d_SouthQX[4]/F");
   shorttree -> Branch("d_SouthQY", &d_SouthQY, "d_SouthQY[4]/F");
   shorttree -> Branch("d_SouthQW", &d_SouthQW, "d_SouthQW/F");
@@ -212,6 +222,9 @@ void cumulant()
   raa2_Ncharge->Write();
   raa4_Ncharge->Write();
   raa6_Ncharge->Write();
+
+  raa32_Ncharge->Write();
+  raa34_Ncharge->Write();
 
   th2d_raa2_Ncharge->Write();
   th2d_raa4_Ncharge->Write();
@@ -267,6 +280,9 @@ void parseampt()
 
     bhis->Fill(impactpar);
 
+    Npart = npartprojinelas + nparttarginelas;
+    bbc_qn = 0;
+    bbc_qs = 0;
     //Analysis each particle in the event
     for (int i = 0; i < nlist; i++)
     {
@@ -299,6 +315,9 @@ void parseampt()
       p.px  = pv[0];
       p.py  = pv[1];
       p.pz  = pv[2];
+
+      if ( p.eta >  3.1 && p.eta <  3.9 ) ++bbc_qn;
+      if ( p.eta < -3.1 && p.eta > -3.9 ) ++bbc_qs;
 
       // if ( ifFVTXS(p.eta) || ifFVTXN(p.eta) )
       if ( test_eff_s(p.pT, p.eta) || test_eff_n(p.pT, p.eta) )
@@ -337,6 +356,8 @@ void processEvent(vector<particle> nucleons)
 
   float Qx2 = 0;
   float Qy2 = 0;
+  float Qx3 = 0;
+  float Qy3 = 0;
   float Qx4 = 0;
   float Qy4 = 0;
   float Qx6 = 0;
@@ -376,6 +397,8 @@ void processEvent(vector<particle> nucleons)
 
     Qx2 += TMath::Cos(2 * nucleons[i].phi);
     Qy2 += TMath::Sin(2 * nucleons[i].phi);
+    Qx3 += TMath::Cos(3 * nucleons[i].phi);
+    Qy3 += TMath::Sin(3 * nucleons[i].phi);
     Qx4 += TMath::Cos(4 * nucleons[i].phi);
     Qy4 += TMath::Sin(4 * nucleons[i].phi);
     Qx6 += TMath::Cos(6 * nucleons[i].phi);
@@ -400,6 +423,8 @@ void processEvent(vector<particle> nucleons)
     float ave_2 = ave_2particle_correlation(Qx2, Qy2, (float)nucleons.size());
     comp->Fill(2.0, ave_2);
     temp_raa2.push_back(ave_2);
+    float ave_32 = ave_2particle_correlation(Qx3, Qy3, (float)nucleons.size());
+    temp_raa32.push_back(ave_32);
   }
 
   if (!(nucleons.size() < 4))
@@ -407,6 +432,8 @@ void processEvent(vector<particle> nucleons)
     float ave_4 = ave_4particle_correlation(Qx2, Qy2, Qx4, Qy4, (float)nucleons.size());
     comp->Fill(3.0, ave_4);
     temp_raa4.push_back(ave_4);
+    float ave_34 = ave_4particle_correlation(Qx3, Qy3, Qx6, Qy6, (float)nucleons.size());
+    temp_raa34.push_back(ave_34);
   }
 
   //-------------------------------------
@@ -428,19 +455,25 @@ void processEvent(vector<particle> nucleons)
   float raa2 = 0; //<<2>>
   float raa4 = 0; //<<4>>
   float raa6 = 0; //<<6>>
+  float raa32 = 0; //<<2>>
+  float raa34 = 0; //<<4>>
   for (unsigned int i = 0; i < temp_raa2.size(); i++)
   {
     raa2 += temp_raa2[i];
+    raa32 += temp_raa32[i];
   }
 
   raa2 = raa2 / temp_raa2.size();
+  raa32 = raa32 / temp_raa2.size();
 
   for (unsigned int i = 0; i < temp_raa4.size(); i++)
   {
     raa4 += temp_raa4[i];
+    raa34 += temp_raa34[i];
   }
 
   raa4 = raa4 / temp_raa4.size();
+  raa34 = raa34 / temp_raa4.size();
 
   for (unsigned int i = 0; i < temp_raa6.size(); i++)
   {
@@ -452,6 +485,9 @@ void processEvent(vector<particle> nucleons)
   raa2_Ncharge->Fill(nucleons.size(), raa2);
   raa4_Ncharge->Fill(nucleons.size(), raa4);
   raa6_Ncharge->Fill(nucleons.size(), raa6);
+
+  raa32_Ncharge->Fill(nucleons.size(), raa32);
+  raa34_Ncharge->Fill(nucleons.size(), raa34);
 
   th2d_raa2_Ncharge->Fill(nucleons.size(), raa2);
   th2d_raa4_Ncharge->Fill(nucleons.size(), raa4);
