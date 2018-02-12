@@ -26,6 +26,7 @@
 #include "TStyle.h"
 #include "TNtuple.h"
 #include "TCanvas.h"
+#include "TTree.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TProfile.h"
@@ -104,6 +105,37 @@ TH1F* dnch;
 TH1F* bhis;
 
 
+TTree* shorttree;
+
+//-- ntp_event variables
+int event;
+float bbc_z;
+float centrality;
+float bbc_qn;
+float bbc_qs;
+int icent;
+int npc1;
+int nfvtxt;
+int nfvtxt_south;
+int nfvtxt_north;
+int nfvtxt_raw;
+unsigned int trigger_scaled;
+unsigned int trigger_live;
+float bc_x;
+float bc_y;
+float zvtx;
+float vtx_z;
+float FVTX_X;
+float FVTX_Y;
+float FVTX_Z;
+
+//static const int nharm = 4;
+float d_SouthQX[4];
+float d_SouthQY[4];
+float d_SouthQW;
+float d_NorthQX[4];
+float d_NorthQY[4];
+float d_NorthQW;
 
 
 
@@ -111,6 +143,7 @@ TH1F* bhis;
 //Functions declarations
 void cumulant()
 {
+
   comp = new TProfile("comp", "comp", 4, 0.5, 4.5, -10, 10);
   daa2 = new TProfile("daa2", "daa2", 9, 0.2, 2.0, -10, 10);
   daa2_with_gap = new TProfile("daa2_with_gap", "daa2_with_gap", 9, 0.2, 2.0, -10, 10);
@@ -135,6 +168,29 @@ void cumulant()
 
   dnch = new TH1F("dnch", "dnch", 6000, -0.5, 5999.5);
   bhis = new TH1F("bhis", "bhis", 100, 0, 20);
+
+
+  // --- adding tree for Jamie's analysis
+  shorttree = new TTree("shorttree", "Event-wise TTree");
+  shorttree->SetAutoFlush(1000);
+  shorttree->SetMaxTreeSize(100000000000LL);
+  shorttree -> Branch("bbc_z", &bbc_z, "bbc_z/F");
+  shorttree -> Branch("centrality", &centrality, "centrality/F");
+  shorttree -> Branch("nfvtxt", &nfvtxt, "nfvtxt/I");
+  shorttree -> Branch("nfvtxt_south", &nfvtxt_south, "nfvtxt_south/I");
+  shorttree -> Branch("nfvtxt_north", &nfvtxt_north, "nfvtxt_north/I");
+  shorttree -> Branch("nfvtxt_raw", &nfvtxt_raw, "nfvtxt_raw/I");
+  shorttree -> Branch("trigger_scaled", &trigger_scaled, "trigger_scaled/i");
+  shorttree -> Branch("d_SouthQX", &d_SouthQX, "d_SouthQX[4]/F");
+  shorttree -> Branch("d_SouthQY", &d_SouthQY, "d_SouthQY[4]/F");
+  shorttree -> Branch("d_SouthQW", &d_SouthQW, "d_SouthQW/F");
+  shorttree -> Branch("d_NorthQX", &d_NorthQX, "d_NorthQX[4]/F");
+  shorttree -> Branch("d_NorthQY", &d_NorthQY, "d_NorthQY[4]/F");
+  shorttree -> Branch("d_NorthQW", &d_NorthQW, "d_NorthQW/F");
+  shorttree -> Branch("bbc_qn", &bbc_qn, "bbc_qn/F");
+  shorttree -> Branch("bbc_qs", &bbc_qs, "bbc_qs/F");
+
+
 
 
   // Parse ampt.dat (run over all events)
@@ -163,6 +219,8 @@ void cumulant()
 
   dnch->Write();
   bhis->Write();
+
+  ttree->Write();
 
   fout->Close();
 
@@ -253,6 +311,7 @@ void parseampt()
     // cout << n_charge << endl;
     // cout << all_particle.size() << endl;
     dnch->Fill(all_particle.size());
+    shorttree->Fill();
     all_particle.clear();
     pA.clear();
     pB.clear();
@@ -264,6 +323,17 @@ void parseampt()
 void processEvent(vector<particle> nucleons)
 {
   if (nucleons.size() < 2) return;
+
+  // --- initialize Q-vectors for tree
+  for ( int i = 0; i < 4; ++i )
+    {
+      d_NorthQX[i] = 0;
+      d_NorthQY[i] = 0;
+      d_SouthQX[i] = 0;
+      d_SouthQY[i] = 0;
+    }
+  d_NorthQW = 0;
+  d_SouthQW = 0;
 
   float Qx2 = 0;
   float Qy2 = 0;
@@ -284,12 +354,24 @@ void processEvent(vector<particle> nucleons)
       pA.push_back(nucleons[i]);
       QxA += TMath::Cos(2 * nucleons[i].phi);
       QyA += TMath::Sin(2 * nucleons[i].phi);
+      for ( int h = 0; h < 4; ++h )
+        {
+          d_SouthQX[h] += TMath::Cos(h * nucleons[i].phi);
+          d_SouthQY[h] += TMath::Sin(h * nucleons[i].phi);
+        }
+      ++d_SouthQW;
     }
     if (nucleons[i].eta > 1.0)
     {
       pB.push_back(nucleons[i]);
       QxB += TMath::Cos(2 * nucleons[i].phi);
       QyB += TMath::Sin(2 * nucleons[i].phi);
+      for ( int h = 0; h < 4; ++h )
+        {
+          d_NorthQX[h] += TMath::Cos(h * nucleons[i].phi);
+          d_NorthQY[h] += TMath::Sin(h * nucleons[i].phi);
+        }
+      ++d_NorthQW;
     }
 
     Qx2 += TMath::Cos(2 * nucleons[i].phi);
@@ -298,8 +380,12 @@ void processEvent(vector<particle> nucleons)
     Qy4 += TMath::Sin(4 * nucleons[i].phi);
     Qx6 += TMath::Cos(6 * nucleons[i].phi);
     Qy6 += TMath::Sin(6 * nucleons[i].phi);
+
   }
 
+  nfvtxt_south = d_SouthQW;
+  nfvtxt_north = d_NorthQW;
+  nfvtxt = nfvtxt_north + nfvtxt_south;
 
   //----------------------------------------------------------------------------------------
   //two particle with eta gap
