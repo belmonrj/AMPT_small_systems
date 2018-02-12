@@ -220,7 +220,7 @@ void cumulant()
   dnch->Write();
   bhis->Write();
 
-  ttree->Write();
+  shorttree->Write();
 
   fout->Close();
 
